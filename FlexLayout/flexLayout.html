@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flex-Layout</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-size: larger;
+            font-weight: bolder;
+            color: #FAFAFA;
+        }
+        /* -------------------------------------------------------- */
+        
+        .flex_direction_container {
+            width: 400px;
+            height: 160px;
+            background-color: #282c34;
+            margin-bottom: 5px;
+            display: flex;
+            flex-direction: row-reverse
+        }
+        
+        .flex_direction_container div {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            background-color: lightblue;
+        }
+        /* -------------------------------------------------------- */
+        
+        .flex_content_container {
+            width: 400px;
+            height: 160px;
+            background-color: #282c34;
+            margin-bottom: 5px;
+            display: flex;
+            flex-direction: row;
+            /* flex-direction: column; */
+            justify-content: space-evenly;
+        }
+        
+        .flex_content_container div {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            background-color: lightgreen;
+        }
+        /* -------------------------------------------------------- */
+        
+        .flex_wrap_container {
+            width: 400px;
+            height: 200px;
+            background-color: #282c34;
+            margin-bottom: 5px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap-reverse;
+        }
+        
+        .flex_wrap_container div {
+            margin: 10px;
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            background-color: lightcoral;
+        }
+        /* -------------------------------------------------------- */
+        
+        .align_items_container {
+            width: 400px;
+            height: 200px;
+            background-color: #282c34;
+            margin-bottom: 5px;
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+        }
+        
+        .align_items_container div {
+            margin: 10px;
+            width: 80px;
+            /* height: 80px; */
+            border-radius: 10px;
+            background-color: lightseagreen;
+        }
+        /* -------------------------------------------------------- */
+        
+        .align_content_container {
+            width: 400px;
+            height: 300px;
+            background-color: #282c34;
+            margin-bottom: 5px;
+            display: flex;
+            flex-flow: row wrap;
+            align-content: space-around;
+        }
+        
+        .align_content_container div {
+            margin: 10px;
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            background-color: lightskyblue;
+        }
+        /* -------------------------------------------------------- */
+        
+        .flex_item_container {
+            width: 400px;
+            height: 100px;
+            background-color: #282c34;
+            margin-bottom: 5px;
+            display: flex;
+            flex-flow: row wrap;
+            align-content: space-around;
+        }
+        
+        .flex_item_container div {
+            margin: 10px;
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            background-color: lightslategray;
+        }
+        
+        .flex_item:nth-child(2) {
+            flex: 1
+        }
+        /* -------------------------------------------------------- */
+        
+        .align_self_order_container {
+            width: 400px;
+            height: 300px;
+            background-color: #282c34;
+            margin-bottom: 5px;
+            display: flex;
+            flex-flow: row wrap;
+            align-items: flex-end
+        }
+        
+        .align_self_order_container div:not(.align_self_order_item:nth-child(1)) {
+            margin: 10px;
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            background-color: lightsalmon;
+        }
+        
+        .align_self_order_item:nth-child(1) {
+            width: 80px;
+            align-self: stretch;
+            border-radius: 10px;
+            background-color: burlywood;
+        }
+        
+        .align_self_order_item:nth-child(2) {
+            align-self: flex-start;
+            order: -1;
+        }
+        
+        .align_self_order_item:nth-child(3) {
+            align-self: center;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="flex_direction_container">
+        <div>A</div>
+        <div>B</div>
+        <div>C</div>
+    </div>
+    <!-- -------------------------------------------------------- -->
+    <div class="flex_content_container">
+        <div>A</div>
+        <div>B</div>
+        <div>C</div>
+    </div>
+    <!-- -------------------------------------------------------- -->
+    <div class="flex_wrap_container">
+        <div>A</div>
+        <div>B</div>
+        <div>C</div>
+        <div>D</div>
+        <div>E</div>
+        <div>F</div>
+    </div>
+    <!-- -------------------------------------------------------- -->
+    <div class="align_items_container">
+        <div>A</div>
+        <div>B</div>
+        <div>C</div>
+    </div>
+    <!-- -------------------------------------------------------- -->
+    <div class="align_content_container">
+        <div>A</div>
+        <div>B</div>
+        <div>C</div>
+        <div>D</div>
+        <div>E</div>
+        <div>F</div>
+    </div>
+    <!-- -------------------------------------------------------- -->
+    <div class="flex_item_container">
+        <div class="flex_item">A</div>
+        <div class="flex_item">B</div>
+        <div class="flex_item">C</div>
+    </div>
+    <!-- -------------------------------------------------------- -->
+    <div class="align_self_order_container">
+        <div class="align_self_order_item">A</div>
+        <div class="align_self_order_item">B</div>
+        <div class="align_self_order_item">C</div>
+    </div>
+
+</body>
+
+</html>
