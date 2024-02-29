@@ -1,5 +1,5 @@
 # Vim Notes
-## 基本的4中模式
+## 基本的4种模式
 - Normal模式: 即命令模式, 默认模式
 - Insert模式: 插入模式, 进行文本编辑
 - Command模式: 命令行模式, 可在底部输入命令执行
@@ -57,7 +57,7 @@
 - yy: 复制这一行
 - u: 撤销上一次操作
 - \<Ctrl-r>: 恢复上一步被撤销的操作(和u相反)
-- .: 重复上一次操作
+- . 表示重复上一次操作
 #### 组合编辑(operator + motion; number + openator +  action)
 - dgg: 删除到第一行
 - dG: 删除到最后一行
@@ -95,6 +95,45 @@
 - :wq: 保存并退出
 - :q!: 不保存退出
 - :h {command} : 显示关于command命令的帮助
+#### 基本操作
+- Ex 命令格式 :[range] {excommand} [args]
+  - range 表示作用域, 不给的话默认是本行
+    - range 可以由一个或两个{address}构成, 即{address}或者{address},{address}
+    - address可以是 {lineno} 即行号, 如 3 表示第三行
+      $ 表示最后一行
+      % 表示文件的所有行(相当于1,$)
+      '< >'在可视模式下按:会自动将选中的区域作为range
+      . 表示光标所在行
+      /pattern/ 表示下一个pattern所在行
+     - address可以作加减法, 如 .+3 表示光标往下第三行; $-3表示倒数第4行
+     - 1, 3 表示1到3行; .,.+4 表示光标到光标往下4行; $-3,$ 表示最后4行
+  - excommand 即为命令
+    - :[range] copy {address} 复制range中的行到address后面
+    - :[range] move {address} 移动range中的行到address后面
+    - :[address] put [x] 吧寄存器x中的内容粘贴到address后面
+  - args 表后续参数
+- 命令示例: 
+  - :[range] delete [x] 表示删除range中的行到寄存器x中, delete可以简写为d
+  - :[range] print 表示将range中的行打印出来(在最下面), print可以简写为p
+#### 批量操作normal
+- 格式 :[range] normal {commands} 表示对**range中的所有行执行normal模式下的命令commands**
+- 示例操作: 
+  - :% normal . 表示对所有行执行上一次的命令
+  - :[range] normal @register 表示对range中的行运行宏操作
+#### 批量操作global
+- 格式 :[range] global /{pattern}/[cmd] 表示对**range中包含pattern的所有行执行Command模式下的命令, 可以嵌套复合**
+  - :[range] global/{pattern}/normal {commands}
+- 示例操作:
+  - :.-3,$-1 global/dudu/normal d 表示删除范围内所有带dudu的行
+#### 替换命令
+- :[range]s/{pattern}/{string}/[flags] 表示将pattern替换为string
+- flags可以是: 
+  - g 表示替换每一行的所有匹配
+  - i 表示忽略大小写
+  - c 表示替换前进行确认
+  - n 表示计数而不替换
+- 示例:
+  - :%s/Vim//gn 表示统计所有行中Vim出现的次数(加了n就只记数)
 
 ### Visual->可视模式
 #### 进入可视模式
@@ -107,10 +146,10 @@
 - i 表示inner, 对象内部
 - a 表示包括对象周围空格或配对符
 - 常见对象: 
- - w/W : 表示一个单词
- - S : 表示句子
- - p : 表示段落
- - (/), [/], {/}, </>, '/" : 即配对符
+  - w/W : 表示一个单词
+  - S : 表示句子
+  - p : 表示段落
+  - (/), [/], {/}, </>, '/" : 即配对符
 ### 基本操作
 - diw : 表示删除光标所处位置的单词
 - ci( : 表示修改小括号内部(删除小括号内部内容并开始输入)
@@ -126,8 +165,8 @@
 - gu : 将光标处字母转小写
 - gU : 将光标处字母转大写
 - g~ : 将光标处字母切换大小写
-- < : 左缩进
-- > : 右缩进
+- \< : 左缩进
+- \> : 右缩进
 - 3> : 3行右缩进
 
 
@@ -136,11 +175,19 @@
 - (A-Z)对应(a-z), 但大写字符表追加而非覆盖
 - 可以通过 :reg {register} 查看寄存器的内容
 - 一些特别的寄存器: 
- - " 是vim默认寄存器
+  - " 是vim默认寄存器
  - % 是当前文件名
- - . 是上一次插入的内容
- - : 是上一次执行的命令
+  - . 是上一次插入的内容
+  - : 是上一次执行的命令
 - 使用指定的寄存器: ( " {register} {operator} )
- - "ayy : 将这一行内容复制到a寄存器
- - "bdiw : 删除单词, 并保存到b寄存器
- - "cp : 将c寄存器的内容粘贴出来
+  - "ayy : 将这一行内容复制到a寄存器
+  - "bdiw : 删除单词, 并保存到b寄存器
+  - "cp : 将c寄存器的内容粘贴出
+
+## 宏(录制键盘操作并允许重放)
+### 基本操作
+- 按 q{register} 开始录制宏, 存在寄存器{register}中
+- 录制过程中按 q 退出录制
+- 按 @{register} 重放存在{register}中的操作
+- 按 @@ 重放上一次宏操作(按 . 不会重放宏操作)
+
