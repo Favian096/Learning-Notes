@@ -199,3 +199,17 @@
 - \> : 右缩进
 - 3> : 3行右缩进
 
+
+
+## 插件管理
+
+### vim的插件管理器
+
+- 示例使用 plug.vim (放在vim安装文件夹下的** vim[xx]\autoload **下
+
+### 基本使用
+
+- :source %  表示刷新
+- :PlugStatus 查看插件安装状态
+- :PlugInstall 安装插件
+- :PlugClean 清理插件
