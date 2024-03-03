@@ -98,10 +98,11 @@ call plug#begin( '~\vimfiles\plugin')
 Plug 'vim-airline/vim-airline'		" 美化底部插件
 Plug 'vim-airline/vim-airline-themes'	" 主题插件
 
-
 """vim主题hybird
 Plug 'w0ng/vim-hybrid'
 
+"""vim左侧文件树
+Plug 'scrooloose/nerdtree'
 
 
 call plug#end()
@@ -115,6 +116,8 @@ let g:airline_theme = "hybrid"
 """"airline设置
 let g:airline_statusline_funcrefs = get(g:, 'airline_statusline_funcrefs', [])
 
-
+"""NERDTree设置每次打开都启用文件树
+"""!注: 如果报错, 将vimfile/plugin/nerdtree下文件全部剪贴覆盖在vimfile文件夹内即可
+autocmd VimEnter * NERDTree
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
