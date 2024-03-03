@@ -85,6 +85,9 @@ set autoindent " 设置自动对齐
 set ai! " 设置自动缩进
 set fdm=indent
 
+" 允许删除换行符
+:set backspace=indent,eol,start
+
 
 "+=======================+
 "=	     Vim 插件        =
