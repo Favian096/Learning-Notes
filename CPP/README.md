@@ -8,7 +8,7 @@
   字符型	 char     1字节
   整型   	  int     4字节
   浮点型	 float    4字节
-  双浮点型	double   8字节
+  双浮点型	double    8字节
   无类型	 void     缺失
   宽字符型	wchar_t  2或4字节(可以存储 Unicode 字符)
 ```
@@ -150,6 +150,28 @@ color b = blur;
 - extern    用来提供一个全局变量的引用, 对所有程序文件均可见(多文件共享一个变量或函数)
 - mutable   用于对象成员替代常量, mutable成员可以通过const成员函数修改
 - thread_local  声明的变量仅可在所属的线程上访问, 随线程创建和销毁
+
+#### 函数使用
+- 基本同C, 同java
+- !在源文件中定义函数给另一个文件使用时, **必须使用函数声明在函数顶部**
+- 函数参数
+  - 传值调用 fun(int a, int b = 3)
+  - 指针调用 fun(int \*a, int \*b)
+  - 应用调用 fun(int &a, int &b)
+  ```c++
+  //示例
+  void fun(int &a, int \*b){
+      // &a表示参数a的地址, a表示地址处存储的值
+      // b表示参数b的地址, *b表示地址处存储的值
+      cout << (&a == b);
+      cout << (a == *b);
+      //以上结果均为true
+  }
+  ```
+- lambda函数
+  - [capture](parameters)->return-type{body}
+  - [captrue](parameters)->{body}
+
 
 
 
