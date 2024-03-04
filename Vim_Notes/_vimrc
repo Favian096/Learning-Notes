@@ -88,6 +88,14 @@ set fdm=indent
 " 允许删除换行符
 :set backspace=indent,eol,start
 
+" 自动补全括号和引号
+inoremap ' ''<ESC>i
+inoremap " ""<ESC>i
+inoremap ( ()<ESC>i
+inoremap [ []<ESC>i
+inoremap { {<CR>}<ESC>O
+
+
 
 "+=======================+
 "=	     Vim 插件        =
