@@ -57,17 +57,20 @@ enum color { red, green=5, blue };
 color r = red;
 color b = blur;
 ```
-*其中 r = 0, b = 6*
+- *其中 r = 0, b = 6*
+
+
 
 
 #### - 类型转换
 - 静态转换
   即**强转类型转换**, 不进行运行时类型检查
+  
   ```c++
   int i = 10;
   float f = static_cast<float>(i);
   ```
-
+  
 - 动态转换
   用于**类继承中的基类和派生类之间指针或应用的转换**
   ```c++
@@ -79,11 +82,12 @@ color b = blur;
 
 - 常量转换
   用于**将const类型对象转为非const类型**
+  
   ```c++
   const int i = 10;
   int& r = const_cast<int&>(i);
   ```
-
+  
 - 重新解释转换
   用于**将一个数据类型的值重新解释为另一个数据类型的值**, 不进行任何类型检
   ```c++
@@ -113,6 +117,7 @@ color b = blur;
   const int I = 100; // 表示I为常量100
   ```
 - **const本质上就是固定被修饰的变量**
+    
     ```c++
     int a = 8;
     int * const p = &a;  // 主要用来防止指针地址被修改
@@ -201,16 +206,16 @@ color b = blur;
   - 在函数中返回引用
 
 - 时间与日期
-  - C++标准库没有提供日期类型需要引入<ctime.h>
+  - C++标准库没有提供日期类型需要引入\<ctime\>
 
 - 输入和输出
-  - <iostream.h> 下属对象: 
+  - \<iostream\> 下属对象: 
     - cin 标准输入流
     - cout 标准输出流
     - cerr 非缓冲标准错误流
     - clog 缓冲标准错误流/标准日志流
-  - <iomanip.h> 如: setw和setprecision
-  - <fstream.h>
+  - \<iomanip\> 如: setw和setprecision
+  - \<fstream\>
 
 - C++的struct基本同C(注意结构体指针要用->访问成员)
 
