@@ -55,7 +55,9 @@
     flex-flow: row wrap;
     ```
 
-- **子元素设置属性**
+
+
+### 子元素设置属性
 
     - [ ] flex: [Number]    -> 子项占得份数
     - [ ] align-self: 属性同align-items    ->控制子项自己在侧轴上排列方式
