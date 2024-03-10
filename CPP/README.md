@@ -73,13 +73,14 @@ color b = blur;
   
 - 动态转换
   用于**类继承中的基类和派生类之间指针或应用的转换**
+  
   ```c++
   class Base{};
   class Derived : public Base{};
   Base* p_base = new Derived;
   Derived* p_derived = dynamic_cast<Derived>(p_base);
   ```
-
+  
 - 常量转换
   用于**将const类型对象转为非const类型**
   
@@ -90,6 +91,7 @@ color b = blur;
   
 - 重新解释转换
   用于**将一个数据类型的值重新解释为另一个数据类型的值**, 不进行任何类型检
+  
   ```c++
   int i = 10;
   float f = reinterpret_cast<float&>(i);
@@ -117,7 +119,7 @@ color b = blur;
   const int I = 100; // 表示I为常量100
   ```
 - **const本质上就是固定被修饰的变量**
-    
+  
     ```c++
     int a = 8;
     int * const p = &a;  // 主要用来防止指针地址被修改
@@ -185,17 +187,19 @@ color b = blur;
 
 - 字符串: 
   c++提供了两种风格的字符串
+  
   - C 风格字符串(以'\0'作为结束标志)
   - string类 类型(不会以'\0'结束字符串, 面向对象的用)
     支持 str = str1 + str2;
-
+  
 - C++指针
   - 基本同C语言
   - C++中增加了空指针的定义, 即:
   ```C++
   int *ptr = NULL;
+  int *ptr = nullptr; //推荐使用这种
   ```
-
+  
 - C++的引用
   - 简介: **引用变量就是已存在变量的另一个名字**
   - !注: 
