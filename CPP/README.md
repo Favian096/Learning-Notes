@@ -216,14 +216,183 @@ color b = blur;
   - \<iostream\> 下属对象: 
     - cin 标准输入流
     - cout 标准输出流
-    - cerr 非缓冲标准错误流
-    - clog 缓冲标准错误流/标准日志流
+    - cerr 非缓冲标准错误流 (控制台显示为红色)
+    - clog 缓冲标准错误流/标准日志流(控制台显示红色)
   - \<iomanip\> 如: setw和setprecision
   - \<fstream\>
 
 - C++的struct基本同C(注意结构体指针要用->访问成员)
 
+- C++的**范围解析运算符** ::
+
+## OOP
+
+### 基本概念
+
+- C++增加了面向对象的概念, 类似C++的核心特性: 
+  - 类中的数据: **成员变量**;
+  - 类中的函数: **成员函数**;
+  - 类似一种模版, 可以创建多个具有相同属性和行为的对象
+
+- C++的类和对象的基本定义:
+
+  ``` c++
+  class {className}
+  {
+      {public|private|protect}:   // 访问修饰符
+      	type variableName;
+      	type functionName(){};
+      	...
+  }
+  
+  className class1;
+  className class2;
+  ```
+
+#### 成员函数
+
+- C++ 的成员函数可以在内部直接定义, 也可以在内部声明后, 在外部使用**范围解析运算符定义**
+
+  ```c++
+  class Box {
+  public:
+      double length;
+      double width;
+      double height;
+  
+      double getWidth() {
+          return this->width;
+      }
+  
+      double getHeight(void);
+  };
+  
+  //重新定义, 相当于override
+  double Box::getHeight() {
+      return this->height;
+  }
+  ```
+
+  
+
+#### 访问修饰符
+
+- C++的类访问修饰符在类结束或或下一个访问修饰符之前有效
+
+- 基本使用: **成员和类的默认访问修饰符是 private**。
+
+  ```c++
+  class Base{
+      double width; //默认为private类型
+      public:
+      ...
+      protected:  // 与private相似, 但protect修饰的成员在派生类|子类中是可以访问的
+      ...
+      private:  //只有类和友缘函数可以访问私有成员
+      ...
+  }
+  ```
+
+  
+
+#### 构造&析构函数
+
+##### 构造函数
+
+- 函数名称与类名完全相同
+
+- 用于初始化成员变量, 没有返回值(也不会返回void)
+
+- 每次创建新对象的时候运行
+
+  ```c++
+  class Line{
+      double length;
+      double width;
+      public:
+      	Line();   // 构造函数
+      	Line(double len);  // 重载构造函数
+      	Line(double len, double width); // 重载构造函数
+  }
+  
+  //没有返回值
+  Line::Line(){
+      cout << "Object is being created !" << endl;
+  }
+  
+  /* 使用初始化列表初始化length, (更简洁)
+     相当于在方法内部写  this.length = len;*/
+  Line::Line(double len) : length(len){ 
+      cout << "Object is being created ! length init ->" << len << endl; 
+  }
+  
+  //同上
+  Line::Line(double length, double width): length(len), width(width){
+      cout << "Object is being created ! length width init ->" << endl; 
+  }
+  ```
 
 
 
+##### 析构函数
+
+- 析构函数名与类名相同, 只是在前面添加了**~**作为前缀
+
+- 析构函数不能带有任何参数, 没有返回值, 用于**程序前关闭资源, 释放内存**
+
+  ```c++
+  class Line{
+      public:
+      	Line();   // 构造函数
+      	~Line(){   //析构函数
+              cout << "Object is delete !" << endl;
+          }
+  }
+  
+  // 当然也可以这样: 
+  //Line::~Line(){
+  //	cout << "Object is delete !" << endl;
+  //}
+  ```
+
+  
+
+#### 拷贝构造函数
+
+- 简言之, 就是*用已创建的对象来初始化新的对象(同类型)*
+
+- **如果在类中没有定义拷贝构造函数，编译器会自行定义一个默认的**
+
+- **默认的拷贝构造函数会逐个成员地复制源对象的所有成员变量**
+
+- **如果类带有指针变量，并有动态内存分配，则它必须有一个拷贝构造函数。**
+
+  ```c++
+  class Line{
+      public:
+      	Line(const Line &line); // 自定义拷贝构造函数
+  }
+  ```
+
+- 通常用于:
+
+  - 初始化新的对象
+
+    ```c++
+    Line line2(line1);  // 使用拷贝构造函数, 构建一个与line1相同的对象
+    Line line2 = line1; // 与上行代码相同的意思, 会自动调用拷贝构造函数
+    ```
+
+  - 将对象作为参数传递
+
+    ```c++
+    void display(Line obj)// 即obj会调用拷贝构造函数, 自身初始化为传参的line
+    {...}  
+    ```
+
+  - 函数返回对象, 接收这个对象
+
+    ```c++
+    Line line2 = func(); // func()函数返回一个Line对象 初始化line2
+    ```
 
