@@ -42,14 +42,6 @@
        ...
    }
 ```
-
-#### - 其他
-- 指针类型
-- 数组类型
-- 结构体类型
-- 类 类型
-- 共用体类型
-
 - 示例
 ```c++
 enum color { red, green=5, blue };
@@ -59,6 +51,13 @@ color b = blur;
 ```
 - *其中 r = 0, b = 6*
 
+
+#### - 其他
+- 指针类型 *
+- 数组类型 []
+- 结构体类型 struct
+- 类 类型 class
+- 共用体类型 union
 
 
 
@@ -163,10 +162,10 @@ color b = blur;
 - 函数参数
   - 传值调用 fun(int a, int b = 3)
   - 指针调用 fun(int \*a, int \*b)
-  - 应用调用 fun(int &a, int &b)
+  - 引用调用 fun(int &a, int &b)
   ```c++
   //示例
-  void fun(int &a, int \*b){
+  void fun(int &a, int *b){
       // &a表示参数a的地址, a表示地址处存储的值
       // b表示参数b的地址, *b表示地址处存储的值
       cout << (&a == b);
@@ -180,6 +179,7 @@ color b = blur;
 
 ### 基本补充
 - c++的rand()函数默认会产生0~数据范围的整数, 不是0~1的小数
+
 - c++中支持多维数组:
   ```c++
   type name[num][num][num] = ... //三维数组
@@ -196,7 +196,7 @@ color b = blur;
   - 基本同C语言
   - C++中增加了空指针的定义, 即:
   ```C++
-  int *ptr = NULL;
+  int *ptr = NULL;    // 其实NULL 就是 0
   int *ptr = nullptr; //推荐使用这种
   ```
   
@@ -225,11 +225,13 @@ color b = blur;
 
 - C++的**范围解析运算符** ::
 
+
+
 ## OOP
 
 ### 基本概念
 
-- C++增加了面向对象的概念, 类似C++的核心特性: 
+- C++增加了面向对象的概念, 类是C++的核心特性: 
   - 类中的数据: **成员变量**;
   - 类中的函数: **成员函数**;
   - 类似一种模版, 可以创建多个具有相同属性和行为的对象
@@ -267,7 +269,7 @@ color b = blur;
       double getHeight(void);
   };
   
-  //重新定义, 相当于override
+  //重新定义|实现, 相当于override
   double Box::getHeight() {
       return this->height;
   }
