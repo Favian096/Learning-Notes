@@ -458,7 +458,7 @@ color b = blur;
   
   class A {
   public:
-      // A中的所有函数都是Line的友元函数
+      // A中的所有函数都是Line的友元函数(需要传递对象做参数)
       void setWidth(Line &line, int width) {
           line.width = width;
       }
@@ -470,6 +470,26 @@ color b = blur;
       a.setWidth(line, 5);
       line.printWidth();
       return 0;
+  }
+  ```
+
+- **!注: 友元函数访问非static成员需要在对象作为参数, 访问static成员或全局变量则不需要**
+
+
+
+#### 内联函数
+
+- 内联函数是为了解决函数调用的效率问题, 编译后会用函数体替换调用的位置
+
+- **!注: 内敛函数一般是只有几行的函数, 通常只用于精短的函数**
+
+  - 一般不允许出现循环和判断语句
+  - 在类中定义的(有函数体)的函数都是内敛函数(写inline为显示内联函数, 不写算隐式内联函数)
+
+  ```c++
+  //函数声明前加上 inline 限定符
+  inline void println(msg){
+      cout << msg << endl;
   }
   ```
 
