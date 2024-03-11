@@ -111,12 +111,14 @@ color b = blur;
 ### 常量const
 
 - 又叫 *字面量*
+
 - 有两种定义方式
   - 使用 #define 进行定义(即宏替换)
   - 使用 const 关键字
   ```c++
   const int I = 100; // 表示I为常量100
   ```
+  
 - **const本质上就是固定被修饰的变量**
   
     ```c++
@@ -129,6 +131,7 @@ color b = blur;
     const int * const p = &a;
     */
     ```
+    
 - 修饰
   - 修饰普通变量
   - 修饰指针变量
@@ -138,8 +141,7 @@ color b = blur;
   const func(int b);    //没什么用
   ```
   - 修饰成员函数
-  - **!注: const 不能与 static 连用**
-
+  
 - 其他类型限定符
   - volatile    表变量可能因为程序外的因素改变
   - restrict    表背修饰的指针是唯一访问它所指对象的方式
@@ -541,6 +543,59 @@ color b = blur;
       line.printThis();		 //结果相同
       cout << &line << endl;	 //结果相同
       cout << *obj << endl;	 //结果相同
+  }
+  ```
+
+  
+
+#### 静态成员
+
+- **类的静态成员在所有对象中是共享的(需要创建对象)**
+
+- 如果不存在初始化语句, 在创建第一个对象时, 类中所有的静态数据都会初始化为0
+
+- 使用 :: 对静态成员变量进行初始化, 
+
+  **不能在类中初始化静态变量(除非用const), 必须在类外部初始化**
+
+- **外部初始化静态变量要加上类型**
+
+  **(为了单独分配内存以便多对象共用, 故创建对象时不会为static成员变量分配内存)**
+
+- **类的静态函数不需要创建对象**
+
+- 可以使用 :: 直接使用类的静态函数
+
+- !注 : 类的静态函数没有this指针, 只能访问静态成员
+
+  ```c++
+  class Line {
+  public:
+  
+      Line() {
+          ObjCount++;
+      }
+  	
+      //需要在类的外部分配内存, 以便多对象共用
+      static int ObjCount;
+      
+      //除非这样, 才会在类的对象创建时分配内存
+  	//static const int ObjCount;
+      
+      static int getObjCount() {
+          return Line::ObjCount;
+      }
+  };
+  
+  // 注意: 初始化需要加上类型(int)
+  int Line::ObjCount = 0;
+  
+  int main() {
+      Line line1;  // 所有对象共用静态变量
+      Line line2;  // 所有对象共用静态变量
+      cout << Line::ObjCount << endl;  //输出为2
+      cout << Line::getObjCount() << endl;  //输出为2
+      return 0;
   }
   ```
 
