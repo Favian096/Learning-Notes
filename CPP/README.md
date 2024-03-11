@@ -398,3 +398,79 @@ color b = blur;
     Line line2 = func(); // func()函数返回一个Line对象 初始化line2
     ```
 
+
+
+#### 友元函数和友元类
+
+- 类的友元函数定义在外部, 但有权访问类的所有private和protected成员
+
+- **友元函数不是成员函数, 没有this指针, 外部定义不加 className :: **
+
+- 友元函数基本用法:  (**friend 关键字**)
+
+  ```c++
+  class Line {
+  private:
+      double width;
+  
+  public:
+      void setWidth(double width) {
+          this->width = width;
+      };
+  
+  	// 友元函数(参数就是这个对象, 由此可以访问对象的所有成员)
+      friend void printWidth(Line line) {
+          cout << line.width << endl;
+      }
+  
+  };
+  
+  // 也可以这样, 不需要加 Line:: 因为友元函数不是成员函数
+  //void printWidth(Line line) {
+  //    cout << line.width << endl;
+  //}
+  
+  int main() {
+      Line line;
+      line.setWidth(3.5);
+      // 直接就可以调用, 因为友元函数声明就相当于已经在外部定义了
+      printWidth(line);  // 输出 3.5
+      return 0;
+  }
+  ```
+
+- 友元类: **友元类的所有成员函数都是源类的友元函数**
+
+  ```c++
+  class Line {
+  private:
+      int width;
+      double height;
+  
+  public:
+      // 声明类A为友元类
+      friend class A;
+  
+      void printWidth() {
+          cout << width << endl;
+      }
+  };
+  
+  class A {
+  public:
+      // A中的所有函数都是Line的友元函数
+      void setWidth(Line &line, int width) {
+          line.width = width;
+      }
+  };
+  
+  int main() {
+      Line line;
+      A a;
+      a.setWidth(line, 5);
+      line.printWidth();
+      return 0;
+  }
+  ```
+
+  
