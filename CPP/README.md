@@ -481,7 +481,7 @@ color b = blur;
 
 - 内联函数是为了解决函数调用的效率问题, 编译后会用函数体替换调用的位置
 
-- **!注: 内敛函数一般是只有几行的函数, 通常只用于精短的函数**
+- **!注: 内联函数一般是只有几行的函数, 通常只用于精短的函数**
 
   - 一般不允许出现循环和判断语句
   - 在类中定义的(有函数体)的函数都是内敛函数(写inline为显示内联函数, 不写算隐式内联函数)
@@ -490,6 +490,57 @@ color b = blur;
   //函数声明前加上 inline 限定符
   inline void println(msg){
       cout << msg << endl;
+  }
+  ```
+
+  
+
+#### this指针和类指针
+
+- this是一个特殊的指针, 指向当前对象的实例
+
+- 只有类中的成员才有this指针
+
+- 简言之, **this就是实例化对象的地址**(下方代码两处输出结果相同)
+
+  ```c++
+  class Line{
+      public: 
+      	void printThis(){
+              cout << this << endl;   //结果相同
+          }
+  }
+  
+  int main(){
+      Line line;
+      line.printThis();
+      cout << &line << endl;    //结果相同
+  }
+  ```
+
+- 类的指针(同结构体):  **使用 -> 进行访问**
+
+  ```c++
+  class Line{
+      public: 
+      	void printThis(){
+              cout << this << endl;   //结果相同
+          }
+  }
+  
+  int main(){
+      Line *line = new Line;    //动态内存分配(可以new Line(@param))
+      line->printThis();
+      cout << line << endl;    //结果相同
+  }
+  
+  //可以这样
+  {
+      Line *obj = new Line(123);
+      Line &line = *obj;
+      line.printThis();		 //结果相同
+      cout << &line << endl;	 //结果相同
+      cout << *obj << endl;	 //结果相同
   }
   ```
 
