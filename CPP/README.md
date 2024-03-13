@@ -677,11 +677,19 @@ color b = blur;
   Base *base = new Derived;
   
   //基类使用virtual修饰函数后, 函数成为虚函数(会被子类重写而完全覆盖)
+  //virtual type function(){...}
   ```
   
+- 虚继承 | 虚函数 | 纯虚函数(没有函数体的, 必须要子类重写的虚函数)
+
+  ```c++
+  //虚继承用于多继承中
+  class Derived : virtual public Base{...}
+  ```
+
   
 
-#### 重载
+### 重载
 
 - ##### 函数重载
 
