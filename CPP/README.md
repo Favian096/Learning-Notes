@@ -685,6 +685,12 @@ color b = blur;
   ```c++
   //虚继承用于多继承中
   class Derived : virtual public Base{...}
+  
+  //虚函数
+  virtual int function(){...}
+  
+  //纯虚函数(函数体需要子类实现), 语法是在函数声明后加 = 0;
+  virtual int funtion() = 0;
   ```
 
   
