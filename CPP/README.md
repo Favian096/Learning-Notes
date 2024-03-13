@@ -620,7 +620,13 @@ color b = blur;
   class DerivedClass : [public|protected|private] BaseClass
   ```
 
+- 对象的构造析构顺序:
 
+  **创建对象会先调用父类构造函数再调用子类的构造函数(先构造父类再构造子类)**
+
+  **对象销毁会先调用子类析构函数再调用父类的析构函数(先析构子类再析构父类)**
+
+  
 
 #### 访问控制
 
@@ -652,6 +658,165 @@ color b = blur;
 
   ```c++
   class <派生类名> : <继承方式1> <基类1>,  <继承方式2> <基类2>, ...
+  ```
+
+- 同名问题: 
+
+  **对于子类, 继承后的同名成员调用遵循就近原则**(覆盖)
+
+  *可以使用作用域限定符指定访问的成员*
+
+  **使用子类对象初始化父类指针时, 调用的同名方法是父类的(非virtual继承):**
+
+  **也就是说, 不用virtual时, 子类的方法即使重写了, 也不影响父类**
+
+  ```c++
+  class Base{}
+  class Derived : public Base{}
+  //如有同名方法, 则调用父类的, 因为创建的对象时父类对象
+  Base *base = new Derived;
+  ```
+
+  
+
+#### 重载
+
+- ##### 函数重载
+
+  在作用域内声明多个功能相似的同名函数(形参不同)
+
+  ```c++
+  class printData
+  {
+     public:
+        void print(int i) {
+          cout << "整数为: " << i << endl;
+        }
+   
+        void print(double  f) {
+          cout << "浮点数为: " << f << endl;
+        }
+   
+        void print(char c[]) {
+          cout << "字符串为: " << c << endl;
+        }
+  };
+  ```
+
+- ##### 运算符重载(operator关键字)
+
+  重载的运算符是带有特殊名称的函数，函数名是由关键字 operator 和其后要重载的运算符符号构成的。
+
+  ```c++
+  className operator {符号} (param){...}
+  ```
+
+  与其他函数一样，重载运算符有一个返回类型和一个参数列表。
+
+  例如重载 + 运算符实现两个对象相加;
+
+```c++
+
+class Box {
+public:
+    Box(int width) : width(width) {}
+
+    int width;
+
+    int getWidth() {
+        return this->width;
+    };
+
+    // 重载 + 运算符，实现把两个 Box 对象相加
+    Box operator+(const Box &b) {
+        Box box(0);
+        box.width = this->width + b.width;
+        return box;
+    }
+};
+
+int main() {
+    Box box1(1);
+    Box box2(2);
+    //使用重载 + 运算符
+    Box box3 = box1 + box2;
+    cout << box1.getWidth() << endl;   // 1
+    cout << box2.getWidth() << endl;   // 2
+    cout << box3.getWidth() << endl;   // 3
+    return 0;
+}
+```
+
+- 可重载的运算符列表(大部分都行)
+
+  ```c++
+  双目运算符 	+ (加)，-(减)，*(乘)，/(除)，% (取模)
+  关系运算符 	==(等于)，!= (不等于)，< (小于)，> (大于)，<=(小于等于)，>=(大于等于)
+  逻辑运算符 	||(逻辑或)，&&(逻辑与)，!(逻辑非)
+  单目运算符 	+ (正)，-(负)，*(指针)，&(取地址)
+  自增减运算符 	++(自增)，--(自减)
+  位运算符 	| (按位或)，& (按位与)，~(按位取反)，^(按位异或),，<< (左移)，>>(右移)
+  赋值运算符 	=, +=, -=, *=, /= , % = , &=, |=, ^=, <<=, >>=
+  空间申请与释放 	new, delete, new[ ] , delete[]
+  其他运算符 	()(函数调用)，->(成员访问)，,(逗号)，[](下标)
+  ```
+
+  可以通过重载输入输出运算符实现对象的toString:
+
+  ```c++
+  class Distance {
+  private:
+      int feet;             // 0 到无穷
+      int inches;           // 0 到 12
+  public:
+      // 所需的构造函数
+      Distance() {
+          feet = 0;
+          inches = 0;
+      }
+  
+      Distance(int f, int i) {
+          feet = f;
+          inches = i;
+      }
+  
+    //重载 输出运算符
+      friend ostream &operator<<(ostream &output,
+                                 const Distance &D) {
+          output << "F : " << D.feet << " I : " << D.inches;
+          return output;
+      }
+    //重载 输入运算符
+      friend istream &operator>>(istream &input, Distance &D) {
+          input >> D.feet >> D.inches;
+          return input;
+      }
+  };
+  
+  int main() {
+      Distance D1(11, 10), D2(5, 11), D3;
+  
+      cout << "Enter the value of object : " << endl;
+      cin >> D3;
+      cout << "First Distance : " << D1 << endl;
+      cout << "Second Distance :" << D2 << endl;
+      cout << "Third Distance :" << D3 << endl;
+  
+      return 0;
+  }
+  ```
+
+  
+
+- 不可重载
+
+  ```c++
+  .：      成员访问运算符
+  .*, ->*：成员指针访问运算符
+  ::：     作用域域运算符
+  sizeof： 长度运算符
+  ?:：     条件运算符
+  #：      预处理符号
   ```
 
   
