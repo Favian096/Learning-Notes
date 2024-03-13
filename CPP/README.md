@@ -675,8 +675,10 @@ color b = blur;
   class Derived : public Base{}
   //如有同名方法, 则调用父类的, 因为创建的对象时父类对象
   Base *base = new Derived;
+  
+  //基类使用virtual修饰函数后, 函数成为虚函数(会被子类重写而完全覆盖)
   ```
-
+  
   
 
 #### 重载
