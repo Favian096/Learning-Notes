@@ -836,3 +836,68 @@ int main() {
   ```
 
   
+
+### 多态
+
+- 即同种方式的不同呈现
+
+  ```c++
+  class Device {
+  public:
+      int width;
+      int height;
+      int length;;
+  
+      int getWidth();
+  
+  //    定义虚函数
+      virtual int getHeight() {
+          cout << "Device getHeight" << endl;
+          return this->height;
+      }
+  
+  //    定义纯虚函数
+      virtual int getLength() = 0;
+  
+  };
+  
+  int Device::getWidth() {
+      cout << "Device getWidth" << endl;
+      return this->width;
+  }
+  
+  class Phone : public Device {
+  public:
+      int getWidth();
+  
+  //    重载虚函数
+      int getHeight() {
+          cout << "Phone getHeight" << endl;
+          return this->height;
+      }
+  
+  //    实现纯虚函数
+      int getLength() {
+          cout << "Phone getLength" << endl;
+          return this->length;
+      }
+  
+  };
+  
+  int Phone::getWidth() {
+      cout << "Phone getWidth" << endl;
+      return this->width;
+  }
+  
+  int main() {
+      Device *device = new Phone;
+      device->getWidth();    //Device getWidth   静态多态
+      device->getHeight();   //Phone getHeight   动态多态
+      device->getLength();   //Phone getLength   动态多态
+      return 0;
+  }
+  ```
+
+  **默认会根据创建的对象类型(Device)来确定调用的方法, 也就是静态多态或静态链接**
+
+  **使用virtual修饰函数后, 即可根据所调用的对象类型来选择调用的函数，这种操作被称为动态链接，或后期绑定**。
