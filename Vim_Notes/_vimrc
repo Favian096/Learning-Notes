@@ -147,12 +147,17 @@ call plug#begin( '~\vimfiles\plugin')
 Plug 'vim-airline/vim-airline'		" 美化底部插件
 Plug 'vim-airline/vim-airline-themes'	" 主题插件
 
-"""vim主题hybird
+"""主题hybird
 Plug 'w0ng/vim-hybrid'
 
-"""vim左侧文件树
-Plug 'scrooloose/nerdtree'
+"""左侧文件树
+"Plug 'scrooloose/nerdtree'
 
+"""MarkDown语法高亮
+Plug 'plasticboy/vim-markdown'
+
+"""C++语法高亮
+Plug 'octol/vim-cpp-enhanced-highlight' 
 
 call plug#end()
 
@@ -165,8 +170,19 @@ let g:airline_theme = "hybrid"
 """"airline设置
 let g:airline_statusline_funcrefs = get(g:, 'airline_statusline_funcrefs', [])
 
-"""NERDTree设置每次打开都启用文件树
-"""!注: 如果报错, 将vimfile/plugin/nerdtree下文件全部剪贴覆盖在vimfile文件夹内即可
-autocmd VimEnter * NERDTree
+""""vim-markdown Github风格markdown语法
+let g:vim_markdown_no_extensions_in_markdown = 1
 
+"""C++语法高亮
+let g:cpp_class_scope_highlight = 1
+let g:cpp_member_variable_highlight = 1
+let g:cpp_class_decl_highlight = 1
+let g:cpp_experimental_template_highlight = 1
+ 
+
+
+ 
+ 
+ 
+ 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
