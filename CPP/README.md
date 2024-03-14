@@ -271,7 +271,7 @@ color b = blur;
       double getHeight(void);
   };
   
-  //重新定义|实现, 相当于override
+  //重写|覆盖|实现
   double Box::getHeight() {
       return this->height;
   }
@@ -933,6 +933,4 @@ int main() {
 
     
 
-    
-
-    
+## Advanced
