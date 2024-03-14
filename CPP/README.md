@@ -1042,4 +1042,138 @@ int main() {
   };
   ```
 
+
+
+### 动态内存
+
+- C++程序中的内存分成了两个部分: 
+
+  - **栈** : 函数内部声明的所有变量都将占用栈内存;
+  - **堆** : 程序中未使用的内存, 可用于动态内存分配
+
+- **new**关键字: 可以为任意类型的动态分配内存
+
+- **delete**关键字: 可以释放动态分配的内存
+
+  ```c++
+  //为基本类型分配
+  double * d = new double;
+  //动态释放内存
+  delete d;
+  
+  //注: 如果自由存储区已被用完，可能无法成功分配内存, 可用如下检查new 运算符是否返回NULL
+  double* pvalue  = NULL;
+  if( !(pvalue  = new double ))
+  {
+     cout << "Error: out of memory." <<endl;
+     exit(1);
+   
+  }
+  ```
+
+  malloc()函数在c++中依旧存在, 但new关键字不管分配了内存, 还创建了对象
+
+  ```c++
+      int *p = new int(1);    //分配内存并初始化值
+      cout << *p << endl;    // 输出: 1
+  
+      delete p;              // 释放掉分配的内存
+      cout << p << endl;     // 输出内存地址
+      cout << *p << endl;    // 输出可能数随机数字
+  
+  ```
+
+- 数组的动态内存分配
+
+  ```c++
+  //一维数组
+  // 动态分配,数组长度为 m
+  int *array=new int [m];
+   
+  //释放内存
+  delete [] array;
+  ```
+
+  ```c++
+  //二维数组
+  int **array;
+  // 假定数组第一维长度为 m， 第二维长度为 n
+  // 动态分配空间
+  array = new int *[m];         //分配一维动态内存
+  for( int i=0; i<m; i++ )
+  {
+      array[i] = new int [n];    //分配二维动态内存
+  }
+  //释放
+  for( int i=0; i<m; i++ )
+  {
+      delete [] array[i];        //释放二维动态内存
+  }
+  delete [] array;                //释放一维动态内存
+  ```
+
+  ```c++
+  //三维数组
+  int ***array;
+  // 假定数组第一维为 m， 第二维为 n， 第三维为h
+  // 动态分配空间
+  array = new int **[m];      //分配一维
+  for( int i=0; i<m; i++ )
+  {
+      array[i] = new int *[n];   //分配二维
+      for( int j=0; j<n; j++ )
+      {
+          array[i][j] = new int [h];   //分配三维
+      }
+  }
+  //释放
+  for( int i=0; i<m; i++ )
+  {
+      for( int j=0; j<n; j++ )
+      {
+          delete[] array[i][j];
+      }
+      delete[] array[i];
+  }
+  delete[] array;
+  ```
+
+- 对象的动态内存分配
+
+  ```c++
+  #include <iostream>
+  using namespace std;
+   
+  class Box
+  {
+     public:
+        Box() { 
+           cout << "调用构造函数！" <<endl; 
+        }
+        ~Box() { 
+           cout << "调用析构函数！" <<endl; 
+        }
+  };
+   
+  int main( )
+  {
+     Box* myBoxArray = new Box[4];
+   
+     delete [] myBoxArray; // 删除数组
+     return 0;
+  }
+  
+  //输出结果
+  /*
+  调用构造函数！
+  调用构造函数！
+  调用构造函数！
+  调用构造函数！
+  调用析构函数！
+  调用析构函数！
+  调用析构函数！
+  调用析构函数！
+  */
+  ```
+
   
