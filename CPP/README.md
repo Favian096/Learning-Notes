@@ -934,3 +934,112 @@ int main() {
     
 
 ## Advanced
+
+### 文件和流
+
+| 数据类型 | 描述                               |
+| -------- | ---------------------------------- |
+| ofstream | 文件输出流, 用于创建文件并写入信息 |
+| ifstream | 文件输入流, 用于读取文件信息       |
+| fstream  | 文件读写流                         |
+
+
+
+### 异常处理
+
+- 关键字 **try,  catch,  throw**
+
+  ```c++
+  //基本使用
+  try
+  {
+     // 保护代码
+  }catch( ExceptionName e1 )
+  {
+     // catch 块
+  }catch( ExceptionName e2 )
+  {
+     // catch 块
+  }catch( ExceptionName eN )
+  {
+     // catch 块
+  }
+  ```
+
+- 抛出异常
+
+  ```c++
+  //throw 语句的操作数可以是任意的表达式，表达式的结果的类型决定了抛出的异常的类型。
+  throw "Division by zero condition!";
+  ```
+
+- 捕获异常
+
+  ```c++
+  try
+  {
+     // 保护代码
+  }catch( ExceptionName e )
+  {
+    // 处理 ExceptionName 异常的代码
+  }
+  ```
+
+- 捕获任意异常
+
+  ```c++
+  //catch 块能够处理 try 块抛出的任何类型的异常，则必须在异常声明的括号内使用省略号 ...
+  try
+  {
+     // 保护代码
+  }catch(...)
+  {
+    // 能处理任何异常的代码
+  }
+  ```
+
+- 示例: 
+
+  ```c++
+  #include <iostream>
+  using namespace std;
+   
+  double division(int a, int b)
+  {
+     if( b == 0 )
+     {
+        throw "Division by zero condition!";
+     }
+     return (a/b);
+  }
+   
+  int main ()
+  {
+     int x = 50;
+     int y = 0;
+     double z = 0;
+   
+     try {
+       z = division(x, y);
+       cout << z << endl;
+     }catch (const char* msg) {
+       cerr << msg << endl;       // Division by zero condition!
+     }
+   
+     return 0;
+  }
+  ```
+
+- 可以通过继承和重载exception类定义新的异常
+
+  ```c++
+  struct MyException : public exception
+  {
+    const char * what () const throw ()
+    {
+      return "C++ Exception";
+    }
+  };
+  ```
+
+  
