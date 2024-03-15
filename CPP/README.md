@@ -1274,6 +1274,23 @@ int main() {
 }
 ```
 
+- 函数模版同样支持重载
+
+  ```c++
+  template<class T1, class T2>
+  void print(T1 arg1, T2 arg2)
+  {
+    cout<<arg1<<" "<<arg2<<endl; 
+  }
+  template<class T>
+  void print(T arg1, T arg2)
+  {
+    cout<< arg1<< " "<< arg2<< endl;
+  }
+  ```
+  
+  
+  
 - **类模版**:
 
   ```c++
@@ -1364,4 +1381,64 @@ int main() {
   }
   ```
   
+
+- 在模板定义语法中关键字 class 与 typename 的作用完全一样。可以替换
+
+
+
+### 预处理器
+
+- 预处理器是一些指令，指示编译器在实际编译之前所需完成的预处理。
+
+  所有的预处理器指令都是以井号（#）开头，只有空格字符可以出现在预处理指令之前。预处理指令不是 C++ 语句，所以它们不会以分号（;）结尾。
+
+- 所有的实例中都有 **#include** 指令。这个宏用于把头文件包含到源文件中。
+
+  C++ 还支持很多预处理指令，比如 #include、#define、#if、#else、#line 等
+
+  ```c++
+  // 符号常量通常称为宏，后续出现的所有宏都会编译之前替换为replacement-text
+  #define macro-name replacement-text 
+  
+  //只在调试时进行编译，调试开关可以使用一个宏来实现
+  #ifdef NULL
+     #define NULL 0
+  #endif
+  
+  #if 0
+     不进行编译的代码
+  #endif
+  
+  //# 和 ## 预处理运算符在 C++ 和 ANSI/ISO C 中都是可用的。# 运算符会把 replacement-text 令牌转换为用引号引起来的字符串。
+  #define MKSTR( x ) #x
+   
+  int main ()
+  {
+         //编译前会被转化为cout << "HELLO C++" << endl;
+      cout << MKSTR(HELLO C++) << endl;  //输出HELLO C++
+      return 0;
+  }
+  ```
+
+- 预定义宏
+
+  ```c++
+  __LINE__ 	程序编译时包含当前行号。
+  __FILE__ 	程序编译时包含当前文件名。
+  __DATE__ 	一个形式为 month/day/year 的字符串，表示把源文件转换为目标代码的日期。
+  __TIME__ 	一个形式为 hour:minute:second 的字符串，它表示程序被编译的时间。
+      
+  //示例代码
+  cout << "Value of __LINE__ : " << __LINE__ << endl;
+  cout << "Value of __FILE__ : " << __FILE__ << endl;
+  cout << "Value of __DATE__ : " << __DATE__ << endl;
+  cout << "Value of __TIME__ : " << __TIME__ << endl;
+  //输出结果
+  //Value of __LINE__ : 6
+  //Value of __FILE__ : test.cpp
+  //Value of __DATE__ : Feb 28 2011
+  //Value of __TIME__ : 18:52:48
+  
+  ```
+
   
