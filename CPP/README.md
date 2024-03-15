@@ -1252,12 +1252,16 @@ int main() {
         其中， TYPE是函数所使用的数据类型的占位符名称(通常一个大写字母)
 
 ```c++
-//使用T作为占位符, 可以接收不同类型的数据进行比较
+//使用T作为返回值占位符, 可以接收不同类型的数据进行比较
 template<typename T>
 T const &getMax(T const &a, T const &b) {
     return a > b ? a : b;
 }
 
+template<class G>
+void printYes(){    //没有返回值则不需要G作为占位符
+    cout << "yes" << endl;
+}
 //判断负数
 template<typename C>
 C bool NegativeNumber(C number){
@@ -1381,7 +1385,6 @@ int main() {
   }
   ```
   
-
 - 在模板定义语法中关键字 class 与 typename 的作用完全一样。可以替换
 
 
@@ -1442,3 +1445,489 @@ int main() {
   ```
 
   
+
+### 信号处理
+
+- 信号是由操作系统传给进程的中断，会提早终止一个程序。在 UNIX、LINUX、Mac OS X 或 Windows 系统上，可以通过按 Ctrl+C 产生中断。
+
+  有些信号不能被程序捕获，但是下表所列信号可以在程序中捕获，并可以基于信号采取适当的动作。这些信号是定义在 C++ 头文件 <csignal> 中。
+
+  ```c++
+  SIGABRT 	程序的异常终止，如调用 abort。
+  SIGFPE 	错误的算术运算，比如除以零或导致溢出的操作。
+  SIGILL 	检测非法指令。
+  SIGINT 	程序终止(interrupt)信号。
+  SIGSEGV 	非法访问内存。
+  SIGTERM 	发送到程序的终止请求。
+  ```
+
+
+
+### 多线程
+
+#### 线程基本使用
+
+- C++11引入了标准线程库std::thread
+
+  **需要引入头文件\<thread\>**
+
+- 基本使用: 
+
+  std::thread 默认构造函数，创建一个空的 **std::thread** 执行对象。
+
+  **基本格式也就是 thread t(\<调用对象\>, \<参数\>)**
+
+  | 函数                                                         | 类别           | 作业                                       |
+  | ------------------------------------------------------------ | -------------- | ------------------------------------------ |
+  | thread() noexcept                                            | 默认构造函数   | 创建一个线程， 什么也不做                  |
+  | template <class Fn, class… Args> explicit thread(Fn&& fn, Args&&… args) | 初始化构造函数 | 创建一个线程， 以`args`为参数 执行`fn`函数 |
+
+  ```c++
+  #include<thread>
+  
+  //使用方法
+  std::thread thread_object(callable)
+      
+  //或者
+  using namespace std;
+  thread t({params});
+  
+  //其中可调用对象可以是以下三个中的任何一个：
+      函数指针
+      函数对象
+      lambda 表达式
+  ```
+
+- 示例代码: 
+
+  ```c++
+  // 使用三个不同的可调用对象
+  #include <iostream>
+  #include <thread>
+  using namespace std;
+    
+  // 函数
+  void foo(int Z)
+  {
+      for (int i = 0; i < Z; i++) {
+          cout << "线程使用函数指针作为可调用参数\n";
+      }
+  }
+    
+  // 可调用对象
+  class thread_obj {
+  public:
+      //重载 () 
+      void operator()(int x)
+      {
+          for (int i = 0; i < x; i++)
+              cout << "线程使用函数对象作为可调用参数\n";
+      }
+  };
+    
+  int main()
+  {
+      cout << "线程 1 、2 、3 "<< "独立运行" << endl;
+    
+      // 传递函数指针作为参数
+      thread th1(foo, 3);
+    
+      // 传递对象(构造函数)作为调用
+      thread th2(thread_obj(), 3);
+    
+      // 定义 Lambda 表达式
+      auto f = [](int x) {
+          for (int i = 0; i < x; i++)
+              cout << "线程使用 lambda 表达式作为可调用参数\n";
+      };
+    
+      // 线程通过使用 lambda 表达式(也就是foo而已)作为可调用的参数
+      thread th3(f, 3);
+    
+      // 等待线程完成
+      // 等待线程 t1 完成
+      th1.join();
+    
+      // 等待线程 t2 完成
+      th2.join();
+    
+      // 等待线程 t3 完成
+      th3.join();
+    
+      return 0;
+  }
+  ```
+
+- 引用传递问题
+
+  ```c++
+  using namespace std;
+  
+  template<typename T>
+  void change(T &a, T b) {
+      a = b;
+  }
+  
+  int main() {
+      int a = 10;
+  //    thread t(change<int>, a, 5);   这样会报错, 因为Args&&... args
+  //std::ref 可以包装按引用传递的值。
+  //std::cref 可以包装按const引用传递的值。
+      //可以这样
+  	thread t(change<int>, ref(a), 5);
+      t.join();
+      cout << a << endl;  // 5
+      return 0;
+  }
+  ```
+
+  
+
+- thread对象的常用函数
+
+  | 函数                            | 作用                                                         |
+  | ------------------------------- | ------------------------------------------------------------ |
+  | void join()                     | 等待线程结束并清理资源（会阻塞）                             |
+  | bool joinable()                 | 返回线程是否可以执行join函数                                 |
+  | void detach()                   | 将线程与调用其的线程分离，彼此独立执行（必须在线程创建时立即调用，且调用此函数会使其不能被join） |
+  | std::thread::id get_id()        | 获取线程id                                                   |
+  | thread& operator=(thread &&rhs) | 见移动构造函数                                               |
+
+- 注意事项
+
+  - 线程是在thread对象被定义的时候开始执行的，join函数只是阻塞等待线程结束并回收资源。
+
+  - 分离的线程（执行过detach的线程）会在调用它的线程结束或自己结束时释放资源。
+
+    ```c++
+        thread t(change<int>, ref(a), 5);
+        t.detach(); //与main分离开, 自行释放资源
+    //    t.join();
+        cout << a << endl;
+    ```
+
+  - 线程会在函数运行完毕后自动释放，不推荐利用其他方法强制结束线程，可能会因资源未释放而导致内存泄漏。
+
+  - 没有执行join或detach的线程在程序结束时会引发异常
+
+#### 资源锁
+
+- 无锁代码
+
+  ```c++
+  #include <iostream>
+  #include <thread>
+  using namespace std;
+  int n = 0;          //定义全局变量
+  void count10000() {  //让n自增到10000
+  	for (int i = 1; i <= 10000; i++)
+  		n++;            
+  }
+  int main() {
+  	thread th[100];
+  	// 这里偷了一下懒，用了c++11的foreach结构
+  	for (thread &x : th)
+  		x = thread(count10000);  //每个线程都去运行, 让n自增到10000
+  	for (thread &x : th)
+  		x.join();
+  	cout << n << endl;  //最终的结果可能是991164, 而不是10000
+  	return 0;
+  }
+  ```
+
+  问题的原因是多个线程同时操作同一个对象, 因此引入了std::mutex和std::atomic
+
+- **互斥锁 mutex**    #include \<mutex\>
+
+  std::mutex是最基本的互斥量，一个线程将mutex锁住时，其它的线程就不能操作mutex，直到这个线程将mutex解锁。
+
+  ```c++
+  //代码更改
+  
+  #include <mutex>
+  
+  mutex mtx;   // 引入互斥锁
+  
+  void count10000() {
+  	for (int i = 1; i <= 10000; i++) {
+  		mtx.lock();       // 资源加锁
+  		n++;
+  		mtx.unlock();      //资源解锁   最终输出10000
+  	}
+  }
+  ```
+
+  | 函数            | 作用                                                         |
+  | --------------- | ------------------------------------------------------------ |
+  | void lock()     | 将mutex上锁。 如果mutex已经被其它线程上锁， 那么会阻塞，直到解锁； 如果mutex已经被同一个线程锁住， 那么会产生死锁 |
+  | void unlock()   | 解锁mutex，释放其所有权。 如果有线程因为调用lock()不能上锁而被阻塞，则调用此函数会将mutex的主动权随机交给其中一个线程； 如果mutex不是被此线程上锁，那么会引发未定义的异常 |
+  | bool try_lock() | 尝试将mutex上锁。 如果mutex未被上锁，则将其上锁并返回true； 如果mutex已被锁则返回false |
+
+  **mutex很好的解决了问题, 但每次都要加锁解锁, 太慢了 , 由此引入了atomic**
+
+- **原子变量atomic **   
+
+  ```c++
+  //代码更改
+  #include <atomic>
+  //int n = 0;          //更改此行
+  atomic_int n = 0;     //改为原子变量, 即可实现
+  //std::atomic_int只是std::atomic<int>的别名
+  ```
+
+  **原子操作是最小的且不可并行化的操作, 意味着即使是多线程，也要像同步进行一样同步操作atomic对象，从而省去了mutex上锁、解锁的时间消耗。**
+
+  | 构造函数                         | 作用                                                        |
+  | -------------------------------- | ----------------------------------------------------------- |
+  | atomic() noexcept = default      | 构造一个atomic对象（未初始化，可通过atomic_init进行初始化） |
+  | constexpr atomic(T val) noexcept | 构造一个atomic对象，用`val`的值来初始化                     |
+
+  [atomic方法参考](https://cplusplus.com/reference/atomic/atomic/)
+
+#### std::async和std::future
+
+- #include \<future\>
+
+- async是一个函数，所以没有成员函数。
+
+  | 重载版本                                                     | 作用                                                         |
+  | ------------------------------------------------------------ | ------------------------------------------------------------ |
+  | template <class Fn, class… Args>  future<typename result_of<Fn(Args…)>::type>    async (Fn&& fn, Args&&… args) | 异步或同步（根据操作系统而定）以args为参数执行fn   同样地，传递引用参数需要std::ref或std::cref |
+  | template <class Fn, class… Args>  future<typename result_of<Fn(Args…)>::type> | async (launch policy, Fn&& fn, Args&&… args);	异步或同步（根据policy参数而定（见下文））以args为参数执行fn，引用参数同上 |
+
+  std::launch有2个枚举值和1个特殊值：
+
+  | 标识符(模式)                              | 作用                                      |
+  | ----------------------------------------- | ----------------------------------------- |
+  | 枚举值：launch::async                     | 异步启动                                  |
+  | 枚举值：launch::deferred                  | 在调用future::get、future::wait时同步启动 |
+  | 特殊值：launch::async \| launch::defereed | 同步或异步，根据操作系统而定              |
+
+  异步运行代码示例:
+
+  ```c++
+  #include <iostream>
+  #include <future>
+  using namespace std;
+  int main() {
+      //使用async函数, 传输标识符(模式), 运行函数, 函数参数
+  	async(launch::async, [](const char *message){
+  		cout << message << flush;
+  	}, "Hello, ");       
+  	cout << "World!" << endl;
+  	return 0;
+  }
+  ```
+
+- **std::futrure用于接收async的移步返回值**
+
+  ```c++
+  #include <iostream>
+  #include <future> // std::async std::future
+  using namespace std;
+  
+  template<class ... Args> decltype(auto) sum(Args&&... args) {
+  	// "0 +"避免空参数包错误
+  	return (0 + ... + args);
+  }
+  
+  int main() {
+  	// 注：这里不能只写函数名sum，必须带模板参数
+  	future<int> val = async(launch::async, sum<int, int, int>, 1, 10, 100);
+  	// future::get() 进行阻塞, 以等待线程结束并获得返回值
+  	cout << val.get() << endl;       // 输出 111
+  	return 0;
+  }
+  ```
+
+  future的常用函数
+
+  - 一般：T get()	阻塞等待线程结束并获取返回值。
+  - 当类型为引用：R& future<R&>::get()
+  - 当类型为void：void future::get()   等价与使用future的wait函数
+
+  | 函数                                                         | 作用                                                         |
+  | ------------------------------------------------------------ | ------------------------------------------------------------ |
+  | 一般：T get()<br/>当类型为引用：R& future<R&>::get()<br/>当类型为void：void future::get() | 阻塞等待线程结束并获取返回值。<br/>若类型为void，则与`future::wait()`相同。<br/>**只能调用一次。** |
+  | void wait() const                                            | 阻塞等待线程结束                                             |
+  | template <class Rep, class Period><br/> future_status wait_for(const chrono::duration<Rep,Period>& rel_time) const; | 阻塞等待rel_time（rel_time是一段时间），<br/>若在这段时间内线程结束则返回future_status::ready<br/>若没结束则返回future_status::timeout<br/>若async是以launch::deferred启动的，则不会阻塞并立即返回future_status::deferred |
+
+  对于void类型
+
+  ```c++
+  #include <iostream>
+  #include <future>
+  using namespace std;
+  void count_big_number() {
+  	for (int i = 0; i <= 10'0000'0000; i++);
+  }
+  int main() {
+  	future<void> fut = async(launch::async, count_big_number);
+  	cout << "Please wait" << flush;
+  	// 使用wait_for每次等待1秒
+  	while (fut.wait_for(chrono::seconds(1)) != future_status::ready)
+  		cout << '.' << flush;  //实现加载动画
+  	cout << endl << "Finished!" << endl;
+  	return 0;
+  }
+  ```
+
+
+
+#### std::promise
+
+- 引入promise是为了获取到thread的返回值, 本质是通过引用获取
+
+  promise实际上是std::future的一个包装
+
+  ```c++
+  #include <iostream>
+  #include <thread>
+  #include <future> // std::promise std::future
+  using namespace std;
+  
+  template<class ... Args> decltype(auto) sum(Args&&... args) {
+  	return (0 + ... + args);
+  }
+  
+  template<class ... Args> void sum_thread(promise<long long> &val, Args&&... args) {
+  	val.set_value(sum(args...));
+  }
+  
+  int main() {
+  	promise<long long> sum_value;
+  	thread get_sum(sum_thread<int, int, int>, ref(sum_value), 1, 10, 100);
+  	cout << sum_value.get_future().get() << endl;
+  	get_sum.join(); 
+  	return 0;
+  }
+  ```
+
+
+
+#### std::this_thread	
+
+- 常用函数
+
+  | 函数                                                         | 作用                                               |
+  | ------------------------------------------------------------ | -------------------------------------------------- |
+  | std::thread::id get_id() noexcept                            | 获取当前线程id                                     |
+  | template<class Rep, class Period><br/>void sleep_for( const std::chrono::duration<Rep, Period>& sleep_duration ) | 等待`sleep_duration`（`sleep_duration`是一段时间） |
+  | void yield() noexcept                                        | **暂时**放弃线程的执行，将主动权交给其他线程       |
+
+  ```c++
+  //示例
+  #include <iostream>
+  #include <thread>
+  #include <atomic>
+  using namespace std;
+  atomic_bool ready = 0;
+  // uintmax_t ==> unsigned long long
+  void sleep(uintmax_t ms) {
+  	this_thread::sleep_for(chrono::milliseconds(ms));
+  }
+  void count() {
+  	while (!ready) this_thread::yield();
+  	for (int i = 0; i <= 20'0000'0000; i++);
+  	cout << "Thread " << this_thread::get_id() << " finished!" << endl;
+  	return;
+  }
+  int main() {
+  	thread th[10];
+  	for (int i = 0; i < 10; i++)
+  		th[i] = thread(::count);
+  	sleep(5000);
+  	ready = true;
+  	cout << "Start!" << endl;
+  	for (int i = 0; i < 10; i++)
+  		th[i].join();
+  	return 0;
+  }
+  ```
+
+  
+
+## Resources
+
+### 标准模板库STL
+
+- C++ STL（标准模板库）是一套功能强大的 C++ 模板类，提供了通用的模板类和函数，这些模板类和函数可以实现多种流行和常用的算法和数据结构，如向量、链表、队列、栈。
+
+- 标准模板库的核心包括以下三个组件：
+
+  | 组件                | 描述                                                         |
+  | ------------------- | ------------------------------------------------------------ |
+  | 容器（Containers）  | 容器是用来管理某一类对象的集合。C++ 提供了各种不同类型的容器，比如 deque、list、vector、map 等。 |
+  | 算法（Algorithms）  | 算法作用于容器。它们提供了执行各种操作的方式，包括对容器内容执行初始化、排序、搜索和转换等操作。 |
+  | 迭代器（iterators） | 迭代器用于遍历对象集合的元素。这些集合可能是容器，也可能是容器的子集。 |
+
+  ```c++
+  //示例代码: 
+  // vector向量容器与数组十分相似，
+  //不同的是，向量在需要扩展大小的时候，会自动处理它自己的存储需求
+  #include <iostream>
+  #include <vector>
+  using namespace std;
+   
+  int main()
+  {
+     // 创建一个向量存储 int
+     vector<int> vec; 
+     int i;
+   
+     // 显示 vec 的原始大小
+     cout << "vector size = " << vec.size() << endl;
+   
+     // 推入 5 个值到向量中
+     for(i = 0; i < 5; i++){
+        vec.push_back(i);
+     }
+   
+     // 显示 vec 扩展后的大小
+     cout << "extended vector size = " << vec.size() << endl;
+  
+     // 使用迭代器 iterator 访问值
+     vector<int>::iterator v = vec.begin();
+     while( v != vec.end()) {
+        cout << "value of v = " << *v << endl;
+        v++;
+     }
+   
+     return 0;
+  }
+  ```
+
+  
+
+
+
+### 标准库
+
+- C++ 标准库可以分为两部分：
+  - **标准函数库：** 是由通用的、独立的、不属于任何类的函数组成, 继承自 C 语言, 做了一定的添加和修改。
+  - **面向对象类库：** 这个库是类及其相关函数的集合。
+
+- 标准函数库分为以下几类：
+  - 输入/输出 I/O
+  - 字符串和字符处理
+  - 数学
+  - 时间、日期和本地化
+  - 动态分配
+  - 其他
+  - 宽字符函数
+
+- 面向对象类库
+
+  标准的 C++ 面向对象类库定义了大量支持一些常见操作的类，比如输入/输出 I/O、字符串处理、数值处理。面向对象类库包含以下内容：
+
+  - 标准的 C++ I/O 类
+  - String 类
+  - 数值类
+  - STL 容器类
+  - STL 算法
+  - STL 函数对象
+  - STL 迭代器
+  - STL 分配器
+  - 本地化库
+  - 异常处理类
+  - 杂项支持库
