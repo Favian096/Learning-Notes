@@ -1233,3 +1233,135 @@ int main() {
 
   所以，如果命名空间中的某个组成部分需要请求定义在另一个文件中的名称，则仍然需要声明该名称。定义同名的命名空间, 可以为已有的命名空间增加新的元素
 
+
+
+### 模版
+
+- 模板是泛型编程的基础，泛型编程即以一种独立于任何特定类型的方式编写代码。
+
+- **函数模版**:
+
+  ```c++
+  template <typename TYPE> 
+  TYPE returnType funcName(param...)
+  {
+     // 函数的主体
+  }
+  ```
+
+        其中， TYPE是函数所使用的数据类型的占位符名称(通常一个大写字母)
+
+```c++
+//使用T作为占位符, 可以接收不同类型的数据进行比较
+template<typename T>
+T const &getMax(T const &a, T const &b) {
+    return a > b ? a : b;
+}
+
+//判断负数
+template<typename C>
+C bool NegativeNumber(C number){
+    return number < 0;
+}
+
+int main() {
+    int a = 1, b = 2;
+    double x = 1.5, y = 6.5;
+    cout << getMax(a, b) << endl;
+    cout << getMax(x, y) << endl;
+    
+    return 0;
+}
+```
+
+- **类模版**:
+
+  ```c++
+  template <class T> 
+  class className {
+  .
+  .
+  .
+  }
+  ```
+  
+  **type** 是占位符类型名称，可以在类被实例化的时候进行指定。
+  
+  可以使用一个逗号分隔的列表来定义多个泛型数据类型。
+  
+  ```c++
+  #include <iostream>
+  #include <vector>
+  #include <string>
+  #include <stdexcept>
+  
+  using namespace std;
+  
+  //在此定义一个需要初始化的模版
+  template<class T>
+  class Stack {
+  private:
+      vector<T> elems;     // 泛型元素
+  
+  public:
+      void push(T const &);  // 入栈
+      void pop();               // 出栈
+      T top() const;            // 返回栈顶元素
+      bool empty() const {       // 如果为空则返回真。
+          return elems.empty();
+      }
+  };
+  
+  //初始化的函数也需要对应泛型模版在头部
+  template<class T>
+  void Stack<T>::push(T const &elem) {
+      // 追加传入元素的副本
+      elems.push_back(elem);
+  }
+  
+  //初始化的函数也需要对应泛型模版在头部
+  template<class T>
+  void Stack<T>::pop() {
+      if (elems.empty()) {
+          throw out_of_range("Stack<>::pop(): empty stack");
+      }
+      // 删除最后一个元素
+      elems.pop_back();
+  }
+  
+  //初始化的函数也需要对应泛型模版在头部
+  template<class T>
+  T Stack<T>::top() const {   //泛型返回值
+      if (elems.empty()) {
+          throw out_of_range("Stack<>::top(): empty stack");
+      }
+      // 返回最后一个元素的副本
+      return elems.back();
+  }
+  
+  int main() {
+      try {
+          Stack<int> intStack;  // int 类型的栈
+          Stack<string> stringStack;    // string 类型的栈
+  
+          // 操作 int 类型的栈
+          intStack.push(7);
+          cout << intStack.top() << endl;
+          intStack.pop();
+  
+          // 操作 string 类型的栈
+          stringStack.push("hello");
+          cout << stringStack.top() << std::endl;
+          stringStack.pop();
+          stringStack.pop();  // 异常
+  
+          return 0;
+      }
+      catch (exception const &ex) {
+          cerr << "Exception: " << ex.what() << endl;
+          return -1;
+      }
+  }
+  ```
+  
+  
