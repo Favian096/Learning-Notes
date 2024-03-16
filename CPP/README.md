@@ -1,7 +1,11 @@
 # CPP Notes
+
 ## Basic
+
 ### 数据类型
+
 #### - 基本数据类型
+
 ```c++
   布尔型	 bool     1字节
   字符型	 char     1字节
@@ -13,6 +17,7 @@
 ```
 
 #### - 类型修饰符
+
 ```C++
   signed
   unsigned
@@ -29,11 +34,14 @@
 
 - **typedef {type} {newTypeName}**
 
-   - 示例
-   ```c++
-   typedef short int wchar_t  //其实wchar_t就是short int
-   ```
+  - 示例
+
+  ```c++
+  typedef short int wchar_t  //其实wchar_t就是short int
+  ```
+
 #### - 枚举类型
+
 ```c++
    enum {enumName} {
        name[=num],
@@ -42,17 +50,21 @@
        ...
    }
 ```
+
 - 示例
+
 ```c++
 enum color { red, green=5, blue };
 ...
 color r = red;
 color b = blur;
 ```
+
 - *其中 r = 0, b = 6*
 
 
 #### - 其他
+
 - 指针类型 *
 - 数组类型 []
 - 结构体类型 struct
@@ -62,35 +74,36 @@ color b = blur;
 
 
 #### - 类型转换
+
 - 静态转换
   即**强转类型转换**, 不进行运行时类型检查
-  
+
   ```c++
   int i = 10;
   float f = static_cast<float>(i);
   ```
-  
+
 - 动态转换
   用于**类继承中的基类和派生类之间指针或应用的转换**
-  
+
   ```c++
   class Base{};
   class Derived : public Base{};
   Base* p_base = new Derived;
   Derived* p_derived = dynamic_cast<Derived>(p_base);
   ```
-  
+
 - 常量转换
   用于**将const类型对象转为非const类型**
-  
+
   ```c++
   const int i = 10;
   int& r = const_cast<int&>(i);
   ```
-  
+
 - 重新解释转换
   用于**将一个数据类型的值重新解释为另一个数据类型的值**, 不进行任何类型检
-  
+
   ```c++
   int i = 10;
   float f = reinterpret_cast<float&>(i);
@@ -113,36 +126,42 @@ color b = blur;
 - 又叫 *字面量*
 
 - 有两种定义方式
+
   - 使用 #define 进行定义(即宏替换)
   - 使用 const 关键字
+
   ```c++
   const int I = 100; // 表示I为常量100
   ```
-  
+
 - **const本质上就是固定被修饰的变量**
-  
-    ```c++
-    int a = 8;
-    int * const p = &a;  // 主要用来防止指针地址被修改
-    *p = 10;
-    cout << *p; //输出的结果为 10 因为const固定的是a的地址, 而不是a的值
-    /*
-    同时固定值和地址
-    const int * const p = &a;
-    */
-    ```
-    
+
+  ```c++
+  int a = 8;
+  int * const p = &a;  // 主要用来防止指针地址被修改
+  *p = 10;
+  cout << *p; //输出的结果为 10 因为const固定的是a的地址, 而不是a的值
+  /*
+  同时固定值和地址
+  const int * const p = &a;
+  */
+  ```
+
 - 修饰
+
   - 修饰普通变量
   - 修饰指针变量
   - 修饰函数形参和函数返回值
+
   ```c++
   int fun(const int a); //没什么用
   const func(int b);    //没什么用
   ```
+
   - 修饰成员函数
-  
+
 - 其他类型限定符
+
   - volatile    表变量可能因为程序外的因素改变
   - restrict    表背修饰的指针是唯一访问它所指对象的方式
   - mutable     表类中的成员变量可以在const成员函数中被修改
@@ -150,6 +169,7 @@ color b = blur;
   - register    定义寄存器变量
 
 ### 存储类
+
 - 用于定义变量|函数的范围可见性和声明周期
 - auto      用于声明变量时推断类型, 函数声明时作返回值占位符
 - register  用来定义存储在寄存器中的变量
@@ -159,12 +179,17 @@ color b = blur;
 - thread_local  声明的变量仅可在所属的线程上访问, 随线程创建和销毁
 
 ### 函数使用
+
 - 基本同C, 同java
+
 - !在源文件中定义函数给另一个文件使用时, **必须使用函数声明在函数顶部**
+
 - 函数参数
+
   - 传值调用 fun(int a, int b = 3)
   - 指针调用 fun(int \*a, int \*b)
   - 引用调用 fun(int &a, int &b)
+
   ```c++
   //示例
   void fun(int &a, int *b){
@@ -175,34 +200,41 @@ color b = blur;
       //以上结果均为true
   }
   ```
+
 - lambda函数
+
   - \[capture\](parameters)->return-type{body}
   - \[captrue\](parameters)->{body}
 
 ### 基本补充
+
 - c++的rand()函数默认会产生0~数据范围的整数, 不是0~1的小数
 
 - c++中支持多维数组:
+
   ```c++
   type name[num][num][num] = ... //三维数组
   ```
 
 - 字符串: 
   c++提供了两种风格的字符串
-  
+
   - C 风格字符串(以'\0'作为结束标志)
   - string类 类型(不会以'\0'结束字符串, 面向对象的用)
     支持 str = str1 + str2;
-  
+
 - C++指针
+
   - 基本同C语言
   - C++中增加了空指针的定义, 即:
+
   ```C++
   int *ptr = NULL;    // 其实NULL 就是 0
   int *ptr = nullptr; //推荐使用这种
   ```
-  
+
 - C++的引用
+
   - 简介: **引用变量就是已存在变量的另一个名字**
   - !注: 
     - 不存在空引用(存在空指针), 引用必须连接到合法内存
@@ -212,9 +244,11 @@ color b = blur;
   - 在函数中返回引用
 
 - 时间与日期
+
   - C++标准库没有提供日期类型需要引入\<ctime\>
 
 - 输入和输出
+
   - \<iostream\> 下属对象: 
     - cin 标准输入流
     - cout 标准输出流
@@ -234,6 +268,7 @@ color b = blur;
 ### 基本概念
 
 - C++增加了面向对象的概念, 类是C++的核心特性: 
+
   - 类中的数据: **成员变量**;
   - 类中的函数: **成员函数**;
   - 类似一种模版, 可以创建多个具有相同属性和行为的对象
@@ -679,7 +714,7 @@ color b = blur;
   //基类使用virtual修饰函数后, 函数成为虚函数(会被子类重写而完全覆盖)
   //virtual type function(){...}
   ```
-  
+
 - 虚继承 | 虚函数 | 纯虚函数(没有函数体的, 必须要子类重写的虚函数)
 
   ```c++
@@ -732,7 +767,6 @@ color b = blur;
   例如重载 + 运算符实现两个对象相加;
 
 ```c++
-
 class Box {
 public:
     Box(int width) : width(width) {}
@@ -917,7 +951,7 @@ int main() {
 
 ### 接口(抽象类)
 
--  **接口使用抽象类来实现, 如果类中至少有一个函数被声明为纯虚函数，则这个类就是抽象类。**
+- **接口使用抽象类来实现, 如果类中至少有一个函数被声明为纯虚函数，则这个类就是抽象类。**
 
 - 设计抽象类是为了提供一个适当的、通用的、标准化的接口
 
@@ -1292,9 +1326,9 @@ int main() {
     cout<< arg1<< " "<< arg2<< endl;
   }
   ```
+
   
-  
-  
+
 - **类模版**:
 
   ```c++
@@ -1305,11 +1339,11 @@ int main() {
   .
   }
   ```
-  
+
   **type** 是占位符类型名称，可以在类被实例化的时候进行指定。
-  
+
   可以使用一个逗号分隔的列表来定义多个泛型数据类型。
-  
+
   ```c++
   #include <iostream>
   #include <vector>
@@ -1384,7 +1418,7 @@ int main() {
       }
   }
   ```
-  
+
 - 在模板定义语法中关键字 class 与 typename 的作用完全一样。可以替换
 
 
@@ -1633,9 +1667,9 @@ int main() {
   	return 0;
   }
   ```
-  
+
   问题的原因是多个线程同时操作同一个对象, 因此引入了std::mutex和std::atomic
-  
+
 - **互斥锁 mutex**    #include \<mutex\>
 
   std::mutex是最基本的互斥量，一个线程将mutex锁住时，其它的线程就不能操作mutex，直到这个线程将mutex解锁。
@@ -1902,10 +1936,12 @@ int main() {
 ### 标准库
 
 - C++ 标准库可以分为两部分：
+
   - **标准函数库：** 是由通用的、独立的、不属于任何类的函数组成, 继承自 C 语言, 做了一定的添加和修改。
   - **面向对象类库：** 这个库是类及其相关函数的集合。
 
 - 标准函数库分为以下几类：
+
   - 输入/输出 I/O
   - 字符串和字符处理
   - 数学
@@ -1930,3 +1966,40 @@ int main() {
   - 异常处理类
   - 杂项支持库
 
+  
+
+### STL容器
+
+- **vector**, 即可变数组
+
+  - push_back()		在vector后面添加一个元素item
+  - pop_back()          在vector后面删除一个元素item
+  - size()                     返回大小(个数)
+  - clear()                   一键清空vector中的所有元素
+  - insert()                 根据指定位置在vector中插入元素
+  - erase()                 删除指定位置的元素
+- **set**, 一个内部自动有序且不含重复元素的容器
+
+  - begin()   　　    返回set容器的第一个元素
+
+  - end() 　　　　 返回set容器的最后一个元素
+
+  - clear()  　　      删除set容器中的所有的元素
+
+  - empty() 　　　判断set容器是否为空
+
+  - max_size() 　   返回set容器可能包含的元素最大个数
+
+  - size() 　　　　 返回当前set容器中的元素个数
+
+  - rbegin　　　　返回的值和end()相同
+
+  - rend()　　　　 返回的值和rbegin()相同
+- **map**, 一种键值对的映射关系容器
+  - insert()
+  - erase()
+  - find()
+  - ......
+- **string**, 即字符串类型
+- **stack**, 栈
+- **queue**, 队列
