@@ -1625,7 +1625,6 @@ int main() {
   }
   int main() {
   	thread th[100];
-  	// 这里偷了一下懒，用了c++11的foreach结构
   	for (thread &x : th)
   		x = thread(count10000);  //每个线程都去运行, 让n自增到10000
   	for (thread &x : th)
@@ -1634,9 +1633,9 @@ int main() {
   	return 0;
   }
   ```
-
+  
   问题的原因是多个线程同时操作同一个对象, 因此引入了std::mutex和std::atomic
-
+  
 - **互斥锁 mutex**    #include \<mutex\>
 
   std::mutex是最基本的互斥量，一个线程将mutex锁住时，其它的线程就不能操作mutex，直到这个线程将mutex解锁。
@@ -1897,7 +1896,6 @@ int main() {
   }
   ```
 
-  
 
 
 
@@ -1931,3 +1929,4 @@ int main() {
   - 本地化库
   - 异常处理类
   - 杂项支持库
+
