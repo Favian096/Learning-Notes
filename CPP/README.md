@@ -201,10 +201,121 @@ color b = blur;
   }
   ```
 
+- 可变参数
+
+  - 使用C语言的方法
+  
+    ```c++
+    #include <stdarg.h>
+    
+    void fun(int num, ...){   //使用 ... 实现接收, 第一个参数 num表传递参数的个数
+     //首先需要声明一个va_list类型的指针
+    //va_list类型是在cstdarg头文件里面定义的，该指针用来依次指向各个参数
+    //va_start是一个宏，用来初始化arg_ptr，使其指向列表的第一个参数，这个宏的第二个参数是sum函数参数列表省略号前得固定参数的名称，用来确定第一个参数的位置 
+       va_list arg_ptr;
+       va_start(arg_ptr, count);
+        
+        int CountSum = 0;
+        //va_arg是一个宏，返回arg_ptr指向的
+    	//参数位置，并使arg_ptr递增来指向下
+    	//一个参数值
+    	//va_arg宏的第二个参数是需要统计的第
+    	//一个参数的类型，如果类型不正确，
+    	//程序也可能会执行，但得到的是无用的
+    	//数据，arg_ptr将被错误地递增
+    	for (int i = 0; i < count; ++i)
+    	{
+    		CountSum += va_arg(arg_ptr, int);
+    	}
+    	//将va_list类型的指针复位成空值
+    	//就是清空可变参数列表
+    	va_end(arg_ptr);
+    
+    	return CountSum;
+    }
+    
+    sum(5,1,2,3,4,5);//return 15
+    ```
+  
+  - **模版可变参数**
+  
+    ```c++
+    template<typename T, typename... Args>
+    void foo(const T& t, const Args&... rest) {
+    	std::cout << sizeof(T) << endl;
+    	cout << sizeof...(Args) << endl;//打印可变参数数量
+    	cout << sizeof...(rest) << endl;//打印可变参数数量
+    }
+    
+    //代码示例使用(递归)
+    template <class T1, class ...T2>
+    void printArgs(T1 p, T2 ...args){
+        cout << "param: " << p << endl;
+        printArgs(...args);
+     }
+    
+    void printArgs(){
+    	cout << "params end" << endl;   // 用于终止
+    }
+    
+    //代码示例使用(逗号表达式)
+    template <class ...C>
+    void printParams(C...args){
+        //逗号表达式解包(实质就是Initializer初始化数组)
+        int a[] = { (cout << args << endl, 0)... }
+    }
+    ```
+  
+  - **可变参数initializer_list**
+  
+    ```c++
+    //initializer_list相对vector更轻量化,用法跟传vector参数类似,列表里只能同类型，而且元素是常量。
+    
+    void error_msg(initializer_list<string> params) {
+    	for (auto p = params.begin(); p != params.end(); ++p)
+    		cout << *p << " ";
+    	cout << endl;
+    }
+    
+    error_msg({"im","da","gong"});//传递参数时, 需要以列表形式传递
+    ```
+  
+    
+  
 - lambda函数
 
   - \[capture\](parameters)->return-type{body}
+  
   - \[captrue\](parameters)->{body}
+  
+    ```c++
+    //基本语法形式(无返回值)
+    auto f = [](int x)->{
+        cout << x << endl;
+    }
+    
+    //基本语法形式(有返回值)
+    auto f = [](auto x, auto y)-> auto {
+    	return x + y;
+    }
+    
+    //其中[]的内部用于访问一些外围的变量
+    //示例
+    int M = 10, N = 20;
+    auto fun = [M, &N](int x )->auto{
+        N = 100;
+        return N * M * x;
+    }
+    
+    //对外围变量的高级写法
+    [&]		//按引用访问封闭范围内的所有变量
+    [=}		//按值访问封闭范围内的所有变量
+    [&, =N] // 按值访问N, 其他变量按引用访问(还可以[=N, &], [&M,=]等)
+    [this] //在类中访问this, 还可以[*this]
+     
+    ```
+  
+    
 
 ### 基本补充
 
@@ -2003,3 +2114,6 @@ int main() {
 - **string**, 即字符串类型
 - **stack**, 栈
 - **queue**, 队列
+
+
+
