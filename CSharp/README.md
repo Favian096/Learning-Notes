@@ -195,17 +195,17 @@
   | 输出参数 | 这种方式可以返回多个值。(用于接收要变更的值)                 |
 
   ```c#
-  //使用输出来改变值
-  public void change(out int x, out int y) {
-      x = 123;
-      y = 456;
-  }
-  
   //使用引用改变|交换值
   public void swap(ref int a, ref int b) {
       a = a ^ b;
       b = a ^ b;
       a = a ^ b;  
+  }
+  
+  //使用输出来改变值
+  public void change(out int x, out int y) {
+      x = 123;
+      y = 456;
   }
   
   //调用
@@ -216,7 +216,7 @@
 
 - 可空类型
 
-  一个特殊的数据类型，**nullable** 类型（可空类型）
+  一个特殊的数据类型，**Nullable** 类型（可空类型）
 
   Nullable< Int32 >，读作"可空的 Int32"，可以被赋值为 -2,147,483,648 到  2,147,483,647 之间的任意值，也可以被赋值为 null 值。类似的，Nullable< bool > 变量可以被赋值为  true 或 false 或 null。
 
