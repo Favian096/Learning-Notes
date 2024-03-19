@@ -43,12 +43,12 @@
 #### - 枚举类型
 
 ```c++
-   enum {enumName} {
-       name[=num],
-       name[=num],
-       name[=num],
-       ...
-   }
+ enum {enumName} {
+     name[=num],
+     name[=num],
+     name[=num],
+     ...
+ }
 ```
 
 - 示例
