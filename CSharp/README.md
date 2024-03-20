@@ -351,9 +351,20 @@
 
 ## OOP
 
-### 修饰符
+### 类
 
-- 范围比较
+- **类的默认访问标识符是internal，成员的默认访问标识符是 private**
+- 和java相同, 定义了有参构造函数后, 默认的无参构造函数会自动消失
+
+- **C#的析构函数同C++, 即 ~ClassName(){...}   无返回值, 不能被重载和继承**
+- **C#的静态成员同java, 无论有多少个类的对象被创建，只会有一个该静态成员的副本**
+
+
+
+
+### 封装
+
+- 修饰符范围比较
 
   ```c#
   // internal 访问修饰符的任何成员可以被定义在该成员所定义的应用程序内的任何类或方法访问
@@ -361,4 +372,126 @@
   //其中protected和internal可以连用, 表示符合任意一条都可以访问
   ```
 
+
+
+### 继承
+
+- 基本语法
+
+  ```c#
+  class <派生类> : <基类>{...}
   
+  class <派生类> : <基类>, <接口1>, <接口2>... {...}  
+  
+  //示例
+  public class Base{};
+  
+  public interface Iface1{};
+  public interface Iface2{};
+  
+  public class Derived : Base, Iface1, Iface2{...}
+  ```
+
+- 同样, **C#不支持多继承, 支持多实现, 但写法相同**
+
+
+
+### 多态
+
+#### 静态多态
+
+- 函数重载同java
+
+- 运算符重载同C++
+
+  ```c#
+  //通过关键字 operator 后跟运算符的符号来定义
+  
+  public static Box operator+ (Box b, Box c)
+  {
+     Box box = new Box();
+     box.length = b.length + c.length;
+     box.breadth = b.breadth + c.breadth;
+     box.height = b.height + c.height;
+     return box;
+  }
+  
+  //使用
+  Box3 = Box1 + Box2;
+  ```
+
+  | 支持重载的运算符                      | 描述                                         |
+  | ------------------------------------- | -------------------------------------------- |
+  | +, -, !, ~, ++, --                    | 这些一元运算符只有一个操作数，且可以被重载。 |
+  | +, -, *, /, %                         | 这些二元运算符带有两个操作数，且可以被重载。 |
+  | ==, !=, <, >, <=, >=                  | 这些比较运算符可以被重载。                   |
+  | &&, \|\|                              | 这些条件逻辑运算符不能被直接重载。           |
+  | +=, -=, *=, /=, %=                    | 这些赋值运算符不能被重载。                   |
+  | =, ., ?:, ->, new, is, sizeof, typeof | 这些运算符不能被重载。                       |
+
+
+
+#### 动态多态
+
+- ***抽象类***: 关键字 **abstract** 创建抽象类，用于提供接口的部分类的实现(方法体)
+
+  - 有关抽象类的一些规则：
+    - 您不能创建一个抽象类的实例。
+    - 您不能在一个抽象类外部声明一个抽象方法。
+    - 通过在类定义前面放置关键字 **sealed**，可以将类声明为**密封类**。当一个类被声明为 **sealed** 时，它不能被继承。抽象类不能被声明为 sealed。
+
+  ```c#
+  //示例
+  abstract class Shape
+     {
+         abstract public int area();
+     }
+     class Rectangle:  Shape
+     {
+         //松override关键字重新
+        public override int area ()
+        {
+           Console.WriteLine("Rectangle 类的面积：");
+           return 999;
+        }
+     }
+  ```
+
+  
+
+- 当有一个定义在类中的函数需要在继承类中实现时，可以使用**虚方法**
+
+  使用关键字 **virtual** 声明, 定义虚方法时, 必须实现虚方法
+
+- 动态多态性是通过 **抽象类** 和 **虚方法** 实现的
+
+  ```c#
+  //示例
+  public class Shape
+  {
+      // 虚方法
+      public virtual void Draw()
+      {
+          Console.WriteLine("执行基类的画图任务");
+      }
+  }
+  
+  class Circle : Shape
+  {
+      //使用override关键字类重新方法
+      public override void Draw()
+      {
+          base.Draw();        // 可以使用base来运行父类的方法, 类似java的super();
+          Console.WriteLine("画一个圆形");
+      }
+  }
+  ```
+
+  
+
+- **抽象方法(abstract)和虚方法(virtual)的区别**(覆盖时都使用**override**关键字)
+
+  - 抽象方法定义时不能写方法体, 虚方法定义时必须写方法体;
+  - 抽象方法必须包含在抽象类中, 虚方法可以在普通类|抽象类中;
+  - 抽象方法必须被实现, 虚方法可以不被实现;
+
