@@ -975,3 +975,107 @@
   ```
 
   
+
+### 事件
+
+- 基本上说是一个用户操作, C# 中使用事件机制实现线程间的通信
+
+  包含事件的类用于发布事件。这被称为 **发布器（publisher）** 类。
+
+  其他接受该事件的类被称为 **订阅器（subscriber）** 类。
+
+- 声明事件
+
+  ```c#
+  //在类的内部声明事件，首先必须声明该事件的委托类型。例如：
+  public delegate void BoilerLogHandler(string status);
+  
+  //然后，声明事件本身，使用 event 关键字：
+  // 基于上面的委托定义事件
+  public event BoilerLogHandler BoilerEventLog;
+  ```
+
+  ```c#
+  //示例代码
+  using System;
+  namespace SimpleEvent{
+    using System;
+    /***********发布器类***********/
+    public class EventTest{
+      private int value;
+  
+      public delegate void NumManipulationHandler();
+      public event NumManipulationHandler ChangeNum;
+        
+      protected virtual void OnNumChanged(){
+        if ( ChangeNum != null ){
+          ChangeNum(); /* 事件被触发 */
+        }else {
+          Console.WriteLine( "event not fire" );
+          Console.ReadKey(); /* 回车继续 */
+        }
+      }
+  
+      public void SetValue( int n ){
+        if ( value != n )
+        {
+          value = n;
+          OnNumChanged();
+        }
+      }
+    }
+  
+    /***********订阅器类***********/
+    public class subscribEvent{
+      public void printf() {
+        Console.WriteLine( "event fire" );
+        Console.ReadKey(); /* 回车继续 */
+      }
+    }
+  
+    /***********触发***********/
+    public class MainClass{
+      public static void Main(){
+        EventTest e = new EventTest(); /* 实例化对象,第一次没有触发事件 */
+        subscribEvent v = new subscribEvent(); /* 实例化对象 */
+        
+        //通过 += 订阅事件 , 或者说给事件添加外部的处理方法
+        e.ChangeNum += new EventTest.NumManipulationHandler( v.printf ); 
+        
+        e.SetValue( 7 );   // event fire
+      }
+    }
+  }
+  ```
+
+  
+
+### 集合
+
+- 用于数据存储和检索的类, 大多数集合类实现了相同的接口。
+
+  - 常用的List语法
+
+    ```C#
+    var list=new List<int>();
+    
+    //如
+    var a=new List<int>();
+    a.Add(12);
+    a.Add(10);
+    Console.WriteLine(a[0]);
+    ```
+
+    
+
+  - | 其他集合类                                                   | 描述和用法                                                   |
+    | ------------------------------------------------------------ | ------------------------------------------------------------ |
+    | [动态数组（ArrayList）](https://www.runoob.com/csharp/csharp-arraylist.html) | 它代表了可被单独**索引**的对象的有序集合。它基本上可以替代一个数组。但是，与数组不同的是，您可以使用**索引**在指定的位置添加和移除项目，动态数组会自动重新调整它的大小。它也允许在列表中进行动态内存分配、增加、搜索、排序各项。 |
+    | [哈希表（Hashtable）](https://www.runoob.com/csharp/csharp-hashtable.html) | 它使用**键**来访问集合中的元素。当您使用键访问元素时，则使用哈希表，而且您可以识别一个有用的键值。哈希表中的每一项都有一个**键/值**对。键用于访问集合中的项目。 |
+    | [排序列表（SortedList）](https://www.runoob.com/csharp/csharp-sortedlist.html) | 它可以使用**键**和**索引**来访问列表中的项。 排序列表是数组和哈希表的组合。它包含一个可使用键或索引访问各项的列表。如果您使用索引访问各项，则它是一个动态数组（ArrayList），如果您使用键访问各项，则它是一个哈希表（Hashtable）。集合中的各项总是按键值排序。 |
+    | [堆栈（Stack）](https://www.runoob.com/csharp/csharp-stack.html) | 它代表了一个**后进先出**的对象集合。当您需要对各项进行后进先出的访问时，则使用堆栈。当您在列表中添加一项，称为**推入**元素，当您从列表中移除一项时，称为**弹出**元素。 |
+    | [队列（Queue）](https://www.runoob.com/csharp/csharp-queue.html) | 它代表了一个**先进先出**的对象集合。当您需要对各项进行先进先出的访问时，则使用队列。当您在列表中添加一项，称为**入队**，当您从列表中移除一项时，称为**出队**。 |
+    | [点阵列（BitArray）](https://www.runoob.com/csharp/csharp-bitarray.html) | 它代表了一个使用值 1 和 0 来表示的**二进制**数组。当您需要存储位，但是事先不知道位数时，则使用点阵列。您可以使用**整型索引**从点阵列集合中访问各项，索引从零开始。 |
+
+
+
