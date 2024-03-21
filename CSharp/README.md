@@ -1079,3 +1079,67 @@
 
 
 
+### 泛型
+
+- 泛型类|接口|抽象类基本用法
+
+  ```C#
+  public class MyGenericArray<T>{
+      
+          private T[] array;
+      
+          public MyGenericArray(int size){
+              array = new T[size + 1];
+          }
+      
+          public T getItem(int index){
+              return array[index];
+          }
+      
+          public void setItem(int index, T value){
+              array[index] = value;
+          }
+      }
+  
+  // 用法
+  MyGenericArray<int> intArray = new MyGenericArray<int>(5);
+  ```
+
+- 泛型委托的基本用法
+
+  ```c#
+  static void Swap<T>(ref T lhs, ref T rhs)
+          {
+              T temp;
+              temp = lhs;
+              lhs = rhs;
+              rhs = temp;
+          }
+  //示例
+  Swap<int>(ref a, ref b);
+  Swap<char>(ref c, ref d);
+  ```
+
+- 泛型委托
+
+  ```c#
+  //定义
+  delegate T NumberChanger<T>(T n);
+  
+  //示例
+  delegate T NumberChanger<T>(T n);
+  
+  static int num = 10;
+  public static int AddNum(int p)
+  {
+      num += p;
+      return num;
+  }
+  
+  // 创建委托实例
+  NumberChanger<int> nc1 = new NumberChanger<int>(AddNum);
+  // 使用委托对象调用方法
+  nc1(25);
+  ```
+
+  
