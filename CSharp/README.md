@@ -8,6 +8,8 @@
 
 - *在VS中输入 cw 回车(tab) 即可快速输入 Console.WriteLine();*
 
+- C#引入了var关键字, 用于推断类型(C++11的auto)
+
   ```c#
   // 示例代码展示
   
@@ -189,8 +191,8 @@
 
   | 方式     | 描述                                                         |
   | -------- | ------------------------------------------------------------ |
-  | 引用参数 | 这种方式复制参数的内存位置的引用给形式参数。这意味着，当形参的值发生改变时，同时也改变实参的值。(用于改变传递的值) |
-  | 输出参数 | 这种方式可以返回多个值。(用于接收要变更的值)                 |
+  | 引用参数 | 这种方式复制参数的内存位置的引用给形式参数。这意味着，当形参的值发生改变时，同时也改变实参的值。**(用于改变传递的值)** |
+  | 输出参数 | 这种方式可以返回多个值。**(用于接收要变更的值)**             |
 
   ```c#
   //使用引用改变|交换值
@@ -313,7 +315,7 @@
   };  
   
   //使用
-   Books Book1;        /* 声明 Book1，类型为 Books */
+  Books Book1;        /* 声明 Book1，类型为 Books */
   Book1.title = "C Programming";
   Book1.author = "Nuha Ali";
   Book1.subject = "C Programming Tutorial";
@@ -637,3 +639,263 @@
 
 ## Advanced
 
+### 特性（Attribute）
+
+- **特性（Attribute）**是用于在运行时传递程序中各种元素（比如类、方法、结构、枚举、组件等）的行为信息的声明性标签。(java的注解)
+
+  - 预定义特性
+  - 自定义特性
+
+- **预定义特性** : .Net 框架提供了三种预定义特性：
+
+  - AttributeUsage
+
+    描述了如何使用一个自定义特性类。它规定了特性可应用到的项目的类型。
+
+  - Conditional
+
+    标记了一个条件方法，其执行依赖于指定的预处理标识符。
+
+  - Obsolete
+
+    标记了不应被使用的程序实体	
+
+- **自定义特性**
+
+  - 创建并使用自定义特性包含四个步骤：
+    - 声明自定义特性(派生自 **System.Attribute**)
+    - 构建自定义特性
+    - 在目标程序元素上应用自定义特性
+    - 通过反射访问特性
+
+
+
+### 反射
+
+- 指程序可以访问、检测和修改它本身状态或行为的一种能力。
+
+- 反射（Reflection）有下列用途：
+  - 它允许在运行时查看特性（attribute）信息。
+  - 它允许审查集合中的各种类型，以及实例化这些类型。
+  - 它允许延迟绑定的方法和属性（property）。
+  - 它允许在运行时创建新类型，然后使用这些类型执行一些任务。
+
+
+
+### 属性语法糖
+
+- 即: get和set方法, 使用 **访问器（accessors）** 让私有域的值可被读写或操作
+
+  ```c#
+  private string code; // 小写
+  // 比如 声明类型为 string 的 Code 属性
+  public string Code   // 大写
+  {
+     get
+     {
+        return code;
+     }
+     set
+     {
+        code = value;
+     }
+  }
+  
+  //这样的实现就相当于java的getter和setter方法, 这是C#的语法糖
+  //使用时, 无需调用get和set, 直接用Code即可自动判定是get还是set
+  classInstance.code;  // 外部无法调用
+  classInstance.Code = "瑠璃璃";  // 自动调用set
+  Console.WriteLine(classInstance.Code);  // 自动调用get
+  ```
+
+  ```c#
+  // 代码示例
+  class Student
+     {
+        //私有变量
+        private string name = "not known";
+        private int age = 0;
+     
+        // 声明类型为 string 的 Name 属性
+        public string Name
+        {
+           get
+           {
+              return name;
+           }
+           set
+           {
+              name = value;
+           }
+        }
+  
+        // 声明类型为 int 的 Age 属性
+        public int Age
+        {
+           get
+           {
+              return age;
+           }
+           set
+           {
+              age = value;
+           }
+        }
+        public override string ToString()
+        {
+           return "Name = " + Name + ", Age = " + Age;
+        }
+      }
+      class ExampleDemo
+      {
+        public static void Main()
+        {
+           // 创建一个新的 Student 对象
+           Student s = new Student();
+           s.Name = "Zara";
+           s.Age = 9;
+           Console.WriteLine("Student Info: {0}", s);
+           //Student Info: Name = Zara, Age = 9
+           // 增加年龄
+           s.Age += 1;
+           Console.WriteLine("Student Info: {0}", s);
+           //Student Info: Name = Zara, Age = 10
+           Console.ReadKey();
+         }
+     }
+  ```
+
+- 抽象属性示例
+
+  ```c#
+  using System;
+  namespace runoob
+  {
+     public abstract class Person
+     {
+        public abstract string Name
+        {
+           get;
+           set;
+        }
+        public abstract int Age
+        {
+           get;
+           set;
+        }
+     }
+     class Student : Person
+     {
+        private string code = "N.A";
+        private string name = "N.A";
+        private int age = 0;
+  
+        // 声明类型为 string 的 Code 属性
+        public string Code
+        {
+           get
+           {
+              return code;
+           }
+           set
+           {
+              code = value;
+           }
+        }
+     
+        // 声明类型为 string 的 Name 属性
+        public override string Name
+        {
+           get
+           {
+              return name;
+           }
+           set
+           {
+              name = value;
+           }
+        }
+  
+        // 声明类型为 int 的 Age 属性
+        public override int Age
+        {
+           get
+           {
+              return age;
+           }
+           set
+           {
+              age = value;
+           }
+        }
+        public override string ToString()
+        {
+           return "Code = " + Code +", Name = " + Name + ", Age = " + Age;
+        }
+     }
+      
+     class ExampleDemo
+     {
+        public static void Main()
+        {
+           // 创建一个新的 Student 对象
+           var s = new Student()
+              {
+                  Code = "001",
+                  Name = "Zara",
+                  Age = 10
+              };
+           Console.WriteLine("Student Info:- {0}", s);
+           //Student Info: Code = 001, Name = Zara, Age = 9
+           // 增加年龄
+           s.Age += 1;
+           Console.WriteLine("Student Info:- {0}", s);
+           //Student Info: Code = 001, Name = Zara, Age = 10
+           Console.ReadKey();
+         }
+     }
+  }
+  ```
+
+  
+
+### 索引器语法糖
+
+- 把类或结构的示例像数组一样索引, 索引器是通过get和set访问数据的
+
+  不需要显示指定类型和指定成员就可以设置或检索索引值;
+
+  ```c#
+  //语法格式
+  
+  <访问修饰符> <元素数据类型> this[参数] {
+      get;set;
+  }
+  
+  //比如通过传入手机号返回用户地址
+  ```
+
+- 一个类可以有多个索引器
+
+- 索引器可以被重载
+
+  ```C#
+  //代码示例
+  
+  public class IndexerTest{
+      int[] temps = new int[10];
+      
+      //定义索引器
+      public int this[int index]{
+          get => temps[index];    //通常还用进行数据检验(索引范围)
+          set => temps[index] = value;
+      }
+  }
+  
+  //使用
+  var test = new IndexerText();
+  test[1] = 12;
+  Console.WriterLine(test[9])
+  ```
+
+  
