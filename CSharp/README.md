@@ -899,3 +899,79 @@
   ```
 
   
+
+### 委托语法糖
+
+- 所有的委托（Delegate）都派生自 **System.Delegate** 类
+
+  ```c#
+  //声明语法
+  delegate <return type> <delegate-name> <parameter list>
+      
+  //示例 public delegate int MyDelegate (string s);
+  ```
+
+- 实例化委托（Delegate）
+
+  一旦声明了委托类型，委托对象必须使用 **new** 关键字来创建，且与一个特定的方法有关。
+
+  传递到 **new** 语句的参数就像方法调用一样书写，但是不带有参数。例如：
+
+  ```c#
+  namespace DelegateAppl
+  {
+     class TestDelegate
+     {
+        delegate int NumberChanger(int n);
+         
+        static int num = 10;
+        // 返回值和参数与委托相同
+        public static int AddNum(int p){
+           num += p;
+           return num;
+        }
+        // 返回值和参数与委托相同
+        public static int MultNum(int q){
+           num *= q;
+           return num;
+        }
+        public static int getNum(){
+           return num;
+        }
+  
+        static void Main(string[] args){
+           // 创建委托实例, 传入方法名称, 实现委托实例化
+           NumberChanger nc1 = new NumberChanger(AddNum);
+           NumberChanger nc2 = new NumberChanger(MultNum);
+           // 使用委托对象调用方法
+           nc1(25);
+           Console.WriteLine("Value of Num: {0}", getNum());
+           nc2(5);
+           Console.WriteLine("Value of Num: {0}", getNum());
+           Console.ReadKey();
+        }
+     }
+  }
+  ```
+
+- 委托的多播
+
+   使用 "+" 运算符进行合并, 一个合并委托调用它所合并的两个委托。
+
+  只有相同类型的委托可被合并。
+
+  "-" 运算符可用于从合并的委托中移除组件委托。 
+
+  ```c#
+  //同上代码
+  NumberChanger nc;
+  NumberChanger nc1 = new NumberChanger(AddNum);
+  NumberChanger nc2 = new NumberChanger(MultNum);
+  nc = nc1;
+  nc += nc2;  // 合并委托, 会一次调用nc1 nc2
+  // 调用多播
+  nc(5);
+  Console.WriteLine("Value of Num: {0}", getNum());  // 输出75
+  ```
+
+  
