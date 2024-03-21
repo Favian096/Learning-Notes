@@ -1143,3 +1143,25 @@
   ```
 
   
+
+### 匿名方法
+
+- 使用委托对象调用可由委托引用的方法(**推荐lambda表达式**)
+
+  ```c#
+  //示例
+  delegate void NumberChanger(int n);
+  ...
+  // 即直接等于|实例化一个具体方法体
+  NumberChanger nc = delegate(int x)
+  {
+      Console.WriteLine("Anonymous Method: {0}", x);
+  };  // 需要加 ;
+  
+  // 或者直接使用lambda表达式
+  NumberChanger nc = x => Console.WriteLine($"Lambda Expression: {x}");
+  
+  ```
+
+  
+
