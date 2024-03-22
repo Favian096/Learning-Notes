@@ -157,7 +157,7 @@ Plug 'w0ng/vim-hybrid'
 Plug 'plasticboy/vim-markdown'
 
 """C++语法高亮
-Plug 'octol/vim-cpp-enhanced-highlight' 
+"Plug 'octol/vim-cpp-enhanced-highlight' 
 
 call plug#end()
 
@@ -174,15 +174,15 @@ let g:airline_statusline_funcrefs = get(g:, 'airline_statusline_funcrefs', [])
 let g:vim_markdown_no_extensions_in_markdown = 1
 
 """C++语法高亮
-let g:cpp_class_scope_highlight = 1
-let g:cpp_member_variable_highlight = 1
-let g:cpp_class_decl_highlight = 1
-let g:cpp_experimental_template_highlight = 1
+"let g:cpp_class_scope_highlight = 1
+"let g:cpp_member_variable_highlight = 1
+"let g:cpp_class_decl_highlight = 1
+"let g:cpp_experimental_template_highlight = 1
  
 
 
  
- 
+
  
  
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
