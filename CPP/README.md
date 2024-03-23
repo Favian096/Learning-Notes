@@ -7,13 +7,13 @@
 #### - 基本数据类型
 
 ```c++
-  布尔型	 bool     1字节
-  字符型	 char     1字节
-  整型   	  int     4字节
-  浮点型	 float    4字节
-  双浮点型	double    8字节
-  无类型	 void     缺失
-  宽字符型	wchar_t  2或4字节(可以存储 Unicode 字符)
+  布尔型      bool    1字节
+  字符型      char    1字节
+  整型        int     4字节
+  浮点型      float   4字节
+  双浮点型    double   8字节
+  无类型void  缺失
+  宽字符型wchar_t  2或4字节(可以存储 Unicode 字符)
 ```
 
 #### - 类型修饰符
