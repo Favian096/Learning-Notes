@@ -8,7 +8,7 @@
 
 - *在VS中输入 cw 回车(tab) 即可快速输入 Console.WriteLine();*
 
-- C#引入了var关键字, 用于推断类型(C++11的auto)
+- C#引入了var关键字用于推断类型(类似C++11的auto)
 
   ```c#
   // 示例代码展示
@@ -169,12 +169,11 @@
 - 枚举
 
   ```c#
-  enum <enum_name>
-  { 
+  enum <enum_name>{ 
       enumeration list 
   };
   ```
-
+  
 - 运算符补充
 
   | 运算符   | 描述                                   | 实例                                                         |
@@ -250,17 +249,15 @@
   ```c#
   // public 返回类型 方法名称( params 类型名称[] 数组名称 )
   //示例
-  public int AddElements(params int[] arr)
-   {
+  public int AddElements(params int[] arr) {
       int sum = 0;
-      foreach (int i in arr)
-      {
+      foreach (int i in arr)    {
          sum += i;
       }
       return sum;
    }
   ```
-
+  
 - Array类
 
   类属性
@@ -306,8 +303,7 @@
   - 如果不使用 New 操作符，只有在所有的字段都被初始化之后，字段才被赋值，对象才被使用。
 
   ```c#
-  struct Books
-  {
+  struct Books{
      public string title;
      public string author;
      public string subject;
@@ -321,31 +317,31 @@
   Book1.subject = "C Programming Tutorial";
   Book1.book_id = 6495407;
   ```
-
+  
   类和结构有以下几个基本的不同点：
-
+  
   **值类型 vs 引用类型：**
-
-  - **结构是值类型（Value Type）：** 结构是值类型，它们在栈上分配内存，而不是在堆上。当将结构实例传递给方法或赋值给另一个变量时，将复制整个结构的内容。
-  - **类是引用类型（Reference Type）：** 类是引用类型，它们在堆上分配内存。当将类实例传递给方法或赋值给另一个变量时，实际上是传递引用（内存地址）而不是整个对象的副本。
-
+  
+  - **结构是值类型（Value Type）：** 结构是值类型，它们在栈上分配内存，而不是在堆上。**当将结构实例传递给方法或赋值给另一个变量时，将复制整个结构的内容**。
+  - **类是引用类型（Reference Type）：** 类是引用类型，它们在堆上分配内存。**当将类实例传递给方法或赋值给另一个变量时，实际上是传递引用（内存地址）而不是整个对象的副本**。
+  
   **继承：**
-
+  
   - **结构不能继承：** 结构不能继承其他结构或类，也不能作为其他结构或类的基类。
   - **类支持继承：** 类支持单继承，一个类可以继承另一个类的成员，并且可以实现多个接口。
-
+  
   **默认构造函数：**
-
-  - **结构不能有无参数的构造函数：** 结构不能包含无参数的构造函数。每个结构都必须有至少一个有参数的构造函数。
+  
+  - **结构不能有无参数的构造函数：** 结构可以没有但不能包含无参数的构造函数。
   - **类可以有无参数的构造函数：** 类可以包含无参数的构造函数，如果没有提供构造函数，系统会提供默认的无参数构造函数。
-
+  
   **可空性：**
-
+  
   - **结构可以是可空的：** 结构可以被声明为可空，即可以赋予 `null` 值。
   - **类默认可为null：** 类的实例默认可以为 `null`，因为它们是引用类型。
-
+  
   **性能和内存分配：**
-
+  
   - **结构通常更轻量：** 由于结构是值类型且在栈上分配内存，它们通常比类更轻量，适用于简单的数据表示。
   - **类可能有更多开销：** 由于类是引用类型，可能涉及更多的内存开销和管理。
 
@@ -409,8 +405,7 @@
   ```c#
   //通过关键字 operator 后跟运算符的符号来定义
   
-  public static Box operator+ (Box b, Box c)
-  {
+  public static Box operator+ (Box b, Box c){
      Box box = new Box();
      box.length = b.length + c.length;
      box.breadth = b.breadth + c.breadth;
@@ -421,7 +416,7 @@
   //使用
   Box3 = Box1 + Box2;
   ```
-
+  
   | 支持重载的运算符                      | 描述                                         |
   | ------------------------------------- | -------------------------------------------- |
   | +, -, !, ~, ++, --                    | 这些一元运算符只有一个操作数，且可以被重载。 |
@@ -444,21 +439,19 @@
 
   ```c#
   //示例
-  abstract class Shape
-     {
+  abstract class Shape   {
          abstract public int area();
-     }
-     class Rectangle:  Shape
-     {
+  }
+  
+  class Rectangle:  Shape{
          //松override关键字重新
-        public override int area ()
-        {
+        public override int area (){
            Console.WriteLine("Rectangle 类的面积：");
            return 999;
-        }
-     }
+      }
+  }
   ```
-
+  
   
 
 - 当有一个定义在类中的函数需要在继承类中实现时，可以使用**虚方法**
@@ -469,28 +462,24 @@
 
   ```c#
   //示例
-  public class Shape
-  {
+  public class Shape{
       // 虚方法
-      public virtual void Draw()
-      {
+      public virtual void Draw(){
           Console.WriteLine("执行基类的画图任务");
       }
   }
   
-  class Circle : Shape
-  {
+  class Circle : Shape{
       //使用override关键字类重新方法
-      public override void Draw()
-      {
+      public override void Draw(){
           base.Draw();        // 可以使用base来运行父类的方法, 类似java的super();
           Console.WriteLine("画一个圆形");
       }
   }
   ```
-
   
-
+  
+  
 - **抽象方法(abstract)和虚方法(virtual)的区别**(覆盖时都使用**override**关键字)
 
   - 抽象方法定义时不能写方法体, 虚方法定义时必须写方法体;
@@ -516,11 +505,9 @@
 - 命名空间可以嵌套
 
   ```c#
-  namespace namespace_name1 
-  {
+  namespace namespace_name1{
      // 代码声明
-     namespace namespace_name2 
-     {
+     namespace namespace_name2{
        // 代码声明
      }
   }
@@ -528,7 +515,7 @@
   //使用可以这样
   using namespace_1.namespace_2;
   ```
-
+  
   
 
 - 为了调用命名空间内的函数或变量，会把命名空间的名称置于前面
@@ -536,28 +523,23 @@
   ```c#
   //示例 namespace_name.item_name;
   
-  namespace first_space
-  {
-     class namespace_cl
-     {
-        public void func()
-        {
+  namespace first_space{
+     class namespace_cl{
+        public void func(){
            Console.WriteLine("Inside first_space");
         }
      }
   }
   
-  class TestClass
-  {
-     static void Main(string[] args)
-     {
+  class TestClass{
+     static void Main(string[] args){
          //以 . 形式调用
         first_space.namespace_cl fc = new first_space.namespace_cl();
         fc.func();
      }
   }
   ```
-
+  
 - **using** 关键字表明程序使用的是给定命名空间中的名称
 
 
@@ -598,24 +580,17 @@
 
   ```c#
   //示例
-  try
-  {
+  try{
      // 引起异常的语句  如 throw new Exception("瑠璃璃啊");
-  }
-  catch( ExceptionName e1 )
-  {
+  }catch( ExceptionName e1 ){
      // 错误处理代码
-  }
-  catch( ExceptionName e2 )
-  {
+  }catch( ExceptionName e2 ){
      // 错误处理代码
-  }
-  finally
-  {
+  }finally{
      // 要执行的语句
   }
   ```
-
+  
   
 
 ### 输入与输出
@@ -691,12 +666,10 @@
   // 比如 声明类型为 string 的 Code 属性
   public string Code   // 大写
   {
-     get
-     {
+     get{
         return code;
      }
-     set
-     {
+     set{
         code = value;
      }
   }
@@ -707,49 +680,39 @@
   classInstance.Code = "瑠璃璃";  // 自动调用set
   Console.WriteLine(classInstance.Code);  // 自动调用get
   ```
-
+  
   ```c#
   // 代码示例
-  class Student
-     {
+  class Student{
         //私有变量
         private string name = "not known";
         private int age = 0;
      
         // 声明类型为 string 的 Name 属性
-        public string Name
-        {
-           get
-           {
+        public string Name{
+           get{
               return name;
            }
-           set
-           {
+           set{
               name = value;
            }
         }
   
         // 声明类型为 int 的 Age 属性
-        public int Age
-        {
-           get
-           {
+        public int Age{
+           get{
               return age;
            }
-           set
-           {
+           set{
               age = value;
            }
         }
-        public override string ToString()
-        {
+        public override string ToString(){
            return "Name = " + Name + ", Age = " + Age;
         }
       }
-      class ExampleDemo
-      {
-        public static void Main()
-        {
+      class ExampleDemo{
+        public static void Main(){
            // 创建一个新的 Student 对象
            Student s = new Student();
            s.Name = "Zara";
@@ -764,83 +727,65 @@
          }
      }
   ```
-
+  
 - 抽象属性示例
 
   ```c#
   using System;
-  namespace runoob
-  {
-     public abstract class Person
-     {
-        public abstract string Name
-        {
+  namespace runoob{
+     public abstract class Person{
+        public abstract string Name{
            get;
            set;
         }
-        public abstract int Age
-        {
+        public abstract int Age{
            get;
            set;
         }
      }
-     class Student : Person
-     {
+     class Student : Person{
         private string code = "N.A";
         private string name = "N.A";
         private int age = 0;
   
         // 声明类型为 string 的 Code 属性
-        public string Code
-        {
-           get
-           {
+        public string Code{
+           get{
               return code;
            }
-           set
-           {
+           set{
               code = value;
            }
         }
      
         // 声明类型为 string 的 Name 属性
-        public override string Name
-        {
-           get
-           {
+        public override string Name{
+           get{
               return name;
            }
-           set
-           {
+           set{
               name = value;
            }
         }
   
         // 声明类型为 int 的 Age 属性
-        public override int Age
-        {
-           get
-           {
+        public override int Age{
+           get{
               return age;
            }
-           set
-           {
+           set{
               age = value;
            }
         }
-        public override string ToString()
-        {
+        public override string ToString(){
            return "Code = " + Code +", Name = " + Name + ", Age = " + Age;
         }
      }
       
-     class ExampleDemo
-     {
-        public static void Main()
-        {
+     class ExampleDemo{
+        public static void Main(){
            // 创建一个新的 Student 对象
-           var s = new Student()
-              {
+           var s = new Student(){
                   Code = "001",
                   Name = "Zara",
                   Age = 10
@@ -856,7 +801,7 @@
      }
   }
   ```
-
+  
   
 
 ### 索引器语法糖
@@ -918,10 +863,8 @@
   传递到 **new** 语句的参数就像方法调用一样书写，但是不带有参数。例如：
 
   ```c#
-  namespace DelegateAppl
-  {
-     class TestDelegate
-     {
+  namespace DelegateAppl{
+     class TestDelegate   {
         delegate int NumberChanger(int n);
          
         static int num = 10;
@@ -953,7 +896,7 @@
      }
   }
   ```
-
+  
 - 委托的多播
 
    使用 "+" 运算符进行合并, 一个合并委托调用它所合并的两个委托。
@@ -1108,8 +1051,7 @@
 - 泛型委托的基本用法
 
   ```c#
-  static void Swap<T>(ref T lhs, ref T rhs)
-          {
+  static void Swap<T>(ref T lhs, ref T rhs){
               T temp;
               temp = lhs;
               lhs = rhs;
@@ -1119,7 +1061,7 @@
   Swap<int>(ref a, ref b);
   Swap<char>(ref c, ref d);
   ```
-
+  
 - 泛型委托
 
   ```c#
@@ -1130,8 +1072,7 @@
   delegate T NumberChanger<T>(T n);
   
   static int num = 10;
-  public static int AddNum(int p)
-  {
+  public static int AddNum(int p){
       num += p;
       return num;
   }
@@ -1141,8 +1082,8 @@
   // 使用委托对象调用方法
   nc1(25);
   ```
-
   
+
 
 ### 匿名方法
 
@@ -1153,8 +1094,7 @@
   delegate void NumberChanger(int n);
   ...
   // 即直接等于|实例化一个具体方法体
-  NumberChanger nc = delegate(int x)
-  {
+  NumberChanger nc = delegate(int x){
       Console.WriteLine("Anonymous Method: {0}", x);
   };  // 需要加 ;
   
@@ -1162,8 +1102,8 @@
   NumberChanger nc = x => Console.WriteLine($"Lambda Expression: {x}");
   
   ```
-
   
+
 
 ### 多线程
 
