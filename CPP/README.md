@@ -4,7 +4,7 @@
 
 ### 数据类型
 
-#### - 基本数据类型
+- #### 基本数据类型
 
 ```c++
   布尔型      bool    1字节
@@ -16,7 +16,8 @@
   宽字符型wchar_t  2或4字节(可以存储 Unicode 字符)
 ```
 
-#### - 类型修饰符
+- ####  类型修饰符
+
 
 ```C++
   signed
@@ -30,17 +31,16 @@
   long long    //比long更大
 ```
 
- #### - typedef 声明
+-  #### typedef 声明
 
-- **typedef {type} {newTypeName}**
+  -  **typedef {type} {newTypeName}**
 
-  - 示例
+     ```c++
+    typedef short int wchar_t  //其实wchar_t就是short int
+    ```
 
-  ```c++
-  typedef short int wchar_t  //其实wchar_t就是short int
-  ```
+- #### 枚举类型
 
-#### - 枚举类型
 
 ```c++
  enum {enumName} {
@@ -51,63 +51,70 @@
  }
 ```
 
-- 示例
+示例
 
 ```c++
 enum color { red, green=5, blue };
 ...
 color r = red;
-color b = blur;
+color b = blur;   //其中 r = 0, b = 6
 ```
 
-- *其中 r = 0, b = 6*
+- 
+  ####  其他
+
+  - 指针类型 *
+
+  - 数组类型 []
+
+  - 结构体类型 struct
+
+  - 类 类型 class
+
+  - 共用体类型 union
 
 
-#### - 其他
-
-- 指针类型 *
-- 数组类型 []
-- 结构体类型 struct
-- 类 类型 class
-- 共用体类型 union
 
 
+- ####  类型转换
 
-#### - 类型转换
+  - 静态转换
+    即**强转类型转换**, 不进行运行时类型检查
 
-- 静态转换
-  即**强转类型转换**, 不进行运行时类型检查
+    ```c++
+    int i = 10;
+    float f = static_cast<float>(i);
+    ```
 
-  ```c++
-  int i = 10;
-  float f = static_cast<float>(i);
-  ```
 
-- 动态转换
-  用于**类继承中的基类和派生类之间指针或应用的转换**
+  - 动态转换
+    用于**类继承中的基类和派生类之间指针或引用的转换**
 
-  ```c++
-  class Base{};
-  class Derived : public Base{};
-  Base* p_base = new Derived;
-  Derived* p_derived = dynamic_cast<Derived>(p_base);
-  ```
+    ```c++
+    class Base{};
+    class Derived : public Base{};
+    Base* p_base = new Derived;
+    Derived* p_derived = dynamic_cast<Derived>(p_base);
+    ```
 
-- 常量转换
-  用于**将const类型对象转为非const类型**
 
-  ```c++
-  const int i = 10;
-  int& r = const_cast<int&>(i);
-  ```
+  - 常量转换
+    用于**将const类型对象转为非const类型**
 
-- 重新解释转换
-  用于**将一个数据类型的值重新解释为另一个数据类型的值**, 不进行任何类型检
+    ```c++
+    const int i = 10;
+    int& r = const_cast<int&>(i);
+    ```
 
-  ```c++
-  int i = 10;
-  float f = reinterpret_cast<float&>(i);
-  ```
+
+  - 重新解释转换
+    用于**将一个数据类型的值重新解释为另一个数据类型的值**, 不进行任何类型检
+
+    ```c++
+    int i = 10;
+    float f = reinterpret_cast<float&>(i);
+    ```
+
 
 
 
@@ -319,7 +326,7 @@ color b = blur;
 
 ### 基本补充
 
-- c++的rand()函数默认会产生0~数据范围的整数, 不是0~1的小数
+- c++的rand()函数默认会产生0到数据范围的整数, 不是0到1的小数
 
 - c++中支持多维数组:
 
@@ -1863,7 +1870,7 @@ int main() {
   }
   ```
 
-- **std::futrure用于接收async的移步返回值**
+- **std::futrure用于接收async的异步返回值**
 
   ```c++
   #include <iostream>
