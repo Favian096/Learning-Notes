@@ -185,6 +185,8 @@ color b = blur;   //其中 r = 0, b = 6
 - mutable   用于对象成员替代常量, mutable成员可以通过const成员函数修改
 - thread_local  声明的变量仅可在所属的线程上访问, 随线程创建和销毁
 
+
+
 ### 函数使用
 
 - 基本同C, 同java
@@ -230,8 +232,7 @@ color b = blur;   //其中 r = 0, b = 6
     	//一个参数的类型，如果类型不正确，
     	//程序也可能会执行，但得到的是无用的
     	//数据，arg_ptr将被错误地递增
-    	for (int i = 0; i < count; ++i)
-    	{
+    	for (int i = 0; i < count; ++i){
     		CountSum += va_arg(arg_ptr, int);
     	}
     	//将va_list类型的指针复位成空值
@@ -243,7 +244,7 @@ color b = blur;   //其中 r = 0, b = 6
     
     sum(5,1,2,3,4,5);//return 15
     ```
-  
+    
   - **模版可变参数**
   
     ```c++
@@ -289,7 +290,7 @@ color b = blur;   //其中 r = 0, b = 6
   
     
   
-- lambda函数
+- **lambda函数**
 
   - \[capture\](parameters)->return-type{body}
   
@@ -394,8 +395,7 @@ color b = blur;   //其中 r = 0, b = 6
 - C++的类和对象的基本定义:
 
   ``` c++
-  class {className}
-  {
+  class {className} {
       {public|private|protect}:   // 访问修饰符
       	type variableName;
       	type functionName(){};
@@ -1103,21 +1103,17 @@ int main() {
 
   ```c++
   //基本使用
-  try
-  {
+  try{
      // 保护代码
-  }catch( ExceptionName e1 )
-  {
+  }catch( ExceptionName e1 ){
      // catch 块
-  }catch( ExceptionName e2 )
-  {
+  }catch( ExceptionName e2 ){
      // catch 块
-  }catch( ExceptionName eN )
-  {
+  }catch( ExceptionName eN ){
      // catch 块
   }
   ```
-
+  
 - 抛出异常
 
   ```c++
@@ -1128,45 +1124,38 @@ int main() {
 - 捕获异常
 
   ```c++
-  try
-  {
+  try{
      // 保护代码
-  }catch( ExceptionName e )
-  {
+  }catch( ExceptionName e ){
     // 处理 ExceptionName 异常的代码
   }
   ```
-
+  
 - 捕获任意异常
 
   ```c++
   //catch 块能够处理 try 块抛出的任何类型的异常，则必须在异常声明的括号内使用省略号 ...
-  try
-  {
+  try{
      // 保护代码
-  }catch(...)
-  {
+  }catch(...){
     // 能处理任何异常的代码
   }
   ```
-
+  
 - 示例: 
 
   ```c++
   #include <iostream>
   using namespace std;
    
-  double division(int a, int b)
-  {
-     if( b == 0 )
-     {
+  double division(int a, int b){
+     if( b == 0 )   {
         throw "Division by zero condition!";
      }
      return (a/b);
   }
    
-  int main ()
-  {
+  int main (){
      int x = 50;
      int y = 0;
      double z = 0;
@@ -1181,14 +1170,12 @@ int main() {
      return 0;
   }
   ```
-
+  
 - 可以通过继承和重载exception类定义新的异常
 
   ```c++
-  struct MyException : public exception
-  {
-    const char * what () const throw ()
-    {
+  struct MyException : public exception{
+    const char * what () const throw ()  {
       return "C++ Exception";
     }
   };
@@ -1215,16 +1202,15 @@ int main() {
   
   //注: 如果自由存储区已被用完，可能无法成功分配内存, 可用如下检查new 运算符是否返回NULL
   double* pvalue  = NULL;
-  if( !(pvalue  = new double ))
-  {
+  if( !(pvalue  = new double )){
      cout << "Error: out of memory." <<endl;
      exit(1);
    
   }
   ```
-
+  
   malloc()函数在c++中依旧存在, 但new关键字不管分配了内存, 还创建了对象
-
+  
   ```c++
       int *p = new int(1);    //分配内存并初始化值
       cout << *p << endl;    // 输出: 1
@@ -1234,7 +1220,7 @@ int main() {
       cout << *p << endl;    // 输出可能数随机数字
   
   ```
-
+  
 - 数组的动态内存分配
 
   ```c++
@@ -1252,52 +1238,45 @@ int main() {
   // 假定数组第一维长度为 m， 第二维长度为 n
   // 动态分配空间
   array = new int *[m];         //分配一维动态内存
-  for( int i=0; i<m; i++ )
-  {
+  for( int i=0; i<m; i++ ){
       array[i] = new int [n];    //分配二维动态内存
   }
   //释放
-  for( int i=0; i<m; i++ )
-  {
+  for( int i=0; i<m; i++ ){
       delete [] array[i];        //释放二维动态内存
   }
   delete [] array;                //释放一维动态内存
   ```
-
+  
   ```c++
   //三维数组
   int ***array;
   // 假定数组第一维为 m， 第二维为 n， 第三维为h
   // 动态分配空间
   array = new int **[m];      //分配一维
-  for( int i=0; i<m; i++ )
-  {
+  for( int i=0; i<m; i++ ){
       array[i] = new int *[n];   //分配二维
-      for( int j=0; j<n; j++ )
-      {
+      for( int j=0; j<n; j++ )    {
           array[i][j] = new int [h];   //分配三维
       }
   }
   //释放
-  for( int i=0; i<m; i++ )
-  {
-      for( int j=0; j<n; j++ )
-      {
+  for( int i=0; i<m; i++ ){
+      for( int j=0; j<n; j++ )    {
           delete[] array[i][j];
       }
       delete[] array[i];
   }
   delete[] array;
   ```
-
+  
 - 对象的动态内存分配
 
   ```c++
   #include <iostream>
   using namespace std;
    
-  class Box
-  {
+  class Box{
      public:
         Box() { 
            cout << "调用构造函数！" <<endl; 
@@ -1307,8 +1286,7 @@ int main() {
         }
   };
    
-  int main( )
-  {
+  int main( ){
      Box* myBoxArray = new Box[4];
    
      delete [] myBoxArray; // 删除数组
@@ -1395,13 +1373,12 @@ int main() {
 
   ```c++
   template <typename TYPE> 
-  TYPE returnType funcName(param...)
-  {
+  TYPE returnType funcName(param...){
      // 函数的主体
   }
   ```
-
-        其中， TYPE是函数所使用的数据类型的占位符名称(通常一个大写字母)
+  
+      其中， TYPE是函数所使用的数据类型的占位符名称(通常一个大写字母)
 
 ```c++
 //使用T作为返回值占位符, 可以接收不同类型的数据进行比较
@@ -1434,17 +1411,15 @@ int main() {
 
   ```c++
   template<class T1, class T2>
-  void print(T1 arg1, T2 arg2)
-  {
+  void print(T1 arg1, T2 arg2){
     cout<<arg1<<" "<<arg2<<endl; 
   }
   template<class T>
-  void print(T arg1, T arg2)
-  {
+  void print(T arg1, T arg2){
     cout<< arg1<< " "<< arg2<< endl;
   }
   ```
-
+  
   
 
 - **类模版**:
@@ -1567,14 +1542,13 @@ int main() {
   //# 和 ## 预处理运算符在 C++ 和 ANSI/ISO C 中都是可用的。# 运算符会把 replacement-text 令牌转换为用引号引起来的字符串。
   #define MKSTR( x ) #x
    
-  int main ()
-  {
+  int main (){
          //编译前会被转化为cout << "HELLO C++" << endl;
       cout << MKSTR(HELLO C++) << endl;  //输出HELLO C++
       return 0;
   }
   ```
-
+  
 - 预定义宏
 
   ```c++
@@ -1659,8 +1633,7 @@ int main() {
   using namespace std;
     
   // 函数
-  void foo(int Z)
-  {
+  void foo(int Z){
       for (int i = 0; i < Z; i++) {
           cout << "线程使用函数指针作为可调用参数\n";
       }
@@ -1670,15 +1643,13 @@ int main() {
   class thread_obj {
   public:
       //重载 () 
-      void operator()(int x)
-      {
+      void operator()(int x)    {
           for (int i = 0; i < x; i++)
               cout << "线程使用函数对象作为可调用参数\n";
       }
   };
     
-  int main()
-  {
+  int main(){
       cout << "线程 1 、2 、3 "<< "独立运行" << endl;
     
       // 传递函数指针作为参数
@@ -1709,7 +1680,7 @@ int main() {
       return 0;
   }
   ```
-
+  
 - 引用传递问题
 
   ```c++
@@ -2020,8 +1991,7 @@ int main() {
   #include <vector>
   using namespace std;
    
-  int main()
-  {
+  int main(){
      // 创建一个向量存储 int
      vector<int> vec; 
      int i;
@@ -2043,7 +2013,7 @@ int main() {
         cout << "value of v = " << *v << endl;
         v++;
      }
-   
+  
      return 0;
   }
   ```
