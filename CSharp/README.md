@@ -21,7 +21,6 @@
               const string str = "瑠璃璃啊";   // const 即java的final关键字
               Class1 c = new Class1();
               c.printStr(str);
-              
               Console.ReadKey(); 
           }
       }
